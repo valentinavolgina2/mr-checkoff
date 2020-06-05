@@ -1,6 +1,6 @@
 package edu.lwtech.csd299.todo;
 
-public class Item {
+public class Item implements Cloneable {
 
     private int id; // Database ID (or -1 if it isn't in the database yet)
     private String name;
@@ -52,6 +52,17 @@ public class Item {
     @Override
     public String toString() {
         return "[" + id + ": " + name + ", completed: " + (completed ? "Yes" : "No") + ", list id: " + listID + "]";
+    }
+
+    @Override
+    public Item clone() {
+        Item clone = null;
+        try {
+            clone = (Item) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new RuntimeException(e);
+        }
+        return clone;
     }
 
 }
