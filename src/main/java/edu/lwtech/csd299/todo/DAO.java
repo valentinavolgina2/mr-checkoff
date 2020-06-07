@@ -21,7 +21,7 @@ public interface DAO<T> {
 
     public int size();
 
-    public T search(String fieldName, String keyword, boolean wholeWordsOnly);
+    public T search(String fieldName, String keyword);
 
     public List<T> getByOwnerID(int ownerID);
 

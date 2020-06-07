@@ -98,7 +98,7 @@ public class DemoPojoMemoryDAO implements DAO<DemoPojo> {
         return memoryDB.size();
     }
 
-    public DemoPojo search(String fieldName, String keyword, boolean wholeWordsOnly) {
+    public DemoPojo search(String fieldName, String keyword) {
         return null;
     }
 
