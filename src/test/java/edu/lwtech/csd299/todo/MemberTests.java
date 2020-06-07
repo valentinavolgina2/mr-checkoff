@@ -9,6 +9,7 @@ public class MemberTests {
     Member member;
     Member copyMember;
     Member newMember;
+    Member invalidMember;
 
     @Before
     public void setUp() {
@@ -19,52 +20,52 @@ public class MemberTests {
 
     @Test(expected = IllegalArgumentException.class)
     public void invalidIDTest() {
-        Member badMember = new Member(-2, member);
+        invalidMember = new Member(-2, member);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void nullUserNameTest() {
-        Member badMember = new Member(1, null, "password", "John", "Smith", "email@gmail.com");
+        invalidMember = new Member(1, null, "password", "John", "Smith", "email@gmail.com");
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void emptyUserNameTest() {
-        Member badMember = new Member(1, "", "password", "John", "Smith", "email@gmail.com");
+        invalidMember = new Member(1, "", "password", "John", "Smith", "email@gmail.com");
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void nullPasswordTest() {
-        Member badMember = new Member(1, "user", null, "John", "Smith", "email@gmail.com");
+        invalidMember = new Member(1, "user", null, "John", "Smith", "email@gmail.com");
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void emptyPasswordTest() {
-        Member badMember = new Member(1, "user", "", "John", "Smith", "email@gmail.com");
+        invalidMember = new Member(1, "user", "", "John", "Smith", "email@gmail.com");
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void nullFirstNameTest() {
-        Member badMember = new Member(1, "user", "password", null, "Smith", "email@gmail.com");
+        invalidMember = new Member(1, "user", "password", null, "Smith", "email@gmail.com");
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void emptyFirstNameTest() {
-        Member badMember = new Member(1, "user", "password", "", "Smith", "email@gmail.com");
+        invalidMember = new Member(1, "user", "password", "", "Smith", "email@gmail.com");
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void nullEmailTest() {
-        Member badMember = new Member(1, "user", "password", "John", "Smith", null);
+        invalidMember = new Member(1, "user", "password", "John", "Smith", null);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void emptyEmailTest() {
-        Member badMember = new Member(1, "user", "password", "John", "Smith", "");
+        invalidMember = new Member(1, "user", "password", "John", "Smith", "");
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void notEmailTest() {
-        Member badMember = new Member(1, "user", "password", "John", "Smith", "email");
+        invalidMember = new Member(1, "user", "password", "John", "Smith", "email");
     }
 
     @Test
