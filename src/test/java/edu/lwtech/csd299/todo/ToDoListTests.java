@@ -60,4 +60,13 @@ public class ToDoListTests {
         assertTrue(newToDoList.toString().contains("owner id: 1"));
     }
 
+    @Test
+    public void equalsTest() {
+        assertFalse(dbToDoList.equals(new ToDoList("List #10", 1)));
+        assertFalse(dbToDoList.equals(10));
+        assertTrue(dbToDoList.equals(dbToDoList));
+        assertTrue(dbToDoList
+                .equals(new ToDoList(dbToDoList.getID(), dbToDoList.getDescription(), dbToDoList.getOwnerID())));
+    }
+
 }

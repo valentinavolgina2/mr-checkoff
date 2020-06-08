@@ -69,4 +69,12 @@ public class ItemTests {
         assertTrue(newItem.toString().contains("list id: 1"));
     }
 
+    @Test
+    public void equalsTest() {
+        assertFalse(dbItem.equals(new Item("Item #10", 1)));
+        assertFalse(dbItem.equals(10));
+        assertTrue(dbItem.equals(dbItem));
+        assertTrue(dbItem.equals(new Item(dbItem.getID(), dbItem.getName(), dbItem.isCompleted(), dbItem.getListID())));
+    }
+
 }

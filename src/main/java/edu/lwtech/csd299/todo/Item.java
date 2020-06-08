@@ -50,4 +50,17 @@ public class Item implements Cloneable {
         return "[" + id + ": " + name + ", completed: " + (completed ? "Yes" : "No") + ", list id: " + listID + "]";
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (o == this)
+            return true;
+        if (!(o instanceof Item))
+            return false;
+
+        Item item = (Item) o;
+        return (item.id == this.id) && (item.name == this.name) && (item.completed == this.completed)
+                && (item.listID == this.listID);
+
+    }
+
 }

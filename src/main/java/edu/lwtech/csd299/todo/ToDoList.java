@@ -47,4 +47,17 @@ public class ToDoList {
         return "[" + id + ": " + description + ", owner id: " + ownerID + "]";
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (o == this)
+            return true;
+        if (!(o instanceof ToDoList))
+            return false;
+
+        ToDoList todoList = (ToDoList) o;
+        return (todoList.id == this.id) && (todoList.description == this.description)
+                && (todoList.ownerID == this.ownerID);
+
+    }
+
 }
