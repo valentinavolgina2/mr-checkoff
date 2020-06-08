@@ -41,10 +41,6 @@ public class Item implements Cloneable {
         return completed;
     }
 
-    public void complete() {
-        completed = true;
-    }
-
     public int getListID() {
         return listID;
     }
@@ -52,17 +48,6 @@ public class Item implements Cloneable {
     @Override
     public String toString() {
         return "[" + id + ": " + name + ", completed: " + (completed ? "Yes" : "No") + ", list id: " + listID + "]";
-    }
-
-    @Override
-    public Item clone() {
-        Item clone = null;
-        try {
-            clone = (Item) super.clone();
-        } catch (CloneNotSupportedException e) {
-            throw new RuntimeException(e);
-        }
-        return clone;
     }
 
 }

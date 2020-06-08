@@ -57,37 +57,16 @@ public class ItemTests {
     @Test
     public void isCompletedTest() {
         assertFalse(newItem.isCompleted());
-    }
-
-    @Test
-    public void completeTest() {
-        assertFalse(dbItem.isCompleted());
-        dbItem.complete();
-        assertTrue(dbItem.isCompleted());
+        Item completedItem = new Item(1000, "item # 3", true, 1000);
+        assertTrue(completedItem.isCompleted());
     }
 
     @Test
     public void toStringTest() {
-        dbItem.complete();
         assertTrue(newItem.toString().startsWith("[-1:"));
         assertTrue(newItem.toString().contains("Item #1"));
         assertTrue(newItem.toString().contains("No"));
         assertTrue(newItem.toString().contains("list id: 1"));
-        assertTrue(dbItem.toString().contains("Yes"));
-    }
-
-    @Test
-    public void cloneTest() {
-        Item cloneItem = dbItem.clone();
-        dbItem.complete();
-        assertEquals(10, dbItem.getID());
-        assertEquals(10, cloneItem.getID());
-        assertEquals("Item #1", dbItem.getName());
-        assertEquals("Item #1", cloneItem.getName());
-        assertEquals(1, dbItem.getListID());
-        assertEquals(1, cloneItem.getListID());
-        assertTrue(dbItem.isCompleted());
-        assertFalse(cloneItem.isCompleted());
     }
 
 }
