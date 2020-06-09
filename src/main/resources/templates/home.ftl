@@ -17,15 +17,16 @@
                 <a href="?cmd=login">Log In | </a>
                 <a href="?cmd=signup">Sign Up</a>
             </#if>
-        </div>
+        </div><br>
 
         <table border="1">
             <tr>
-                <th>
+                <th></th><th>List Name</th>
             </tr>
-            <#list toDoList as toDoList>
+            <#list todoList as todoList>
             <tr>
-                
+                <td><input type = "checkbox"></td>
+                <td><input type = "text" value = "Task #1"></td>
             </tr>
             </#list>
         </table><br />
