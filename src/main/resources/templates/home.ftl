@@ -25,8 +25,8 @@
             </tr>
             <#list todoLists as todoList>
             <tr>
-                <td><input type = "checkbox"></td>
-                <td><input type = "text" value = "Task #1"></td>
+                <td><input type="checkbox"></td>
+                <td><a href="?cmd=show&index=${todoList?index}">${todoList.description}</a></td>
             </tr>
             </#list>
         </table><br />
