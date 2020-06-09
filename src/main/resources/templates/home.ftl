@@ -10,20 +10,20 @@
         <h2>ToDo Lists:</h2>
 
         <div>
-            <#if loggedIn>
+           <!-- <#if loggedIn>
                 <span>Hello User! | </span>
                 <a href="?cmd=logout">Log Out</a>
             <#else>
                 <a href="?cmd=login">Log In | </a>
                 <a href="?cmd=signup">Sign Up</a>
-            </#if>
+            </#if> -->
         </div>
 
         <table border="1">
             <tr>
                 <th>
             </tr>
-            <#list toDoList as toDoList>
+            <#list todoLists as todoList>
             <tr>
                 
             </tr>

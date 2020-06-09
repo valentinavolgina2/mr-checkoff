@@ -20,6 +20,7 @@ public class ToDoListServlet extends HttpServlet {
     private static final Configuration freemarker = new Configuration(Configuration.getVersion());
 
     private DAO<DemoPojo> demoMemoryDao = null;
+    private DAO<ToDoList> todoListDao = null;
 
     @Override
     public void init(ServletConfig config) throws ServletException {
@@ -40,6 +41,8 @@ public class ToDoListServlet extends HttpServlet {
         }
         logger.info("Successfully Loaded Freemarker");
         
+
+        todoListDao = new ToDoListMemoryDAO();
         demoMemoryDao = new DemoPojoMemoryDAO();
         addDemoData();
 
@@ -52,14 +55,18 @@ public class ToDoListServlet extends HttpServlet {
         long startTime = System.currentTimeMillis();
 
         String command = request.getParameter("cmd");
-        if (command == null) command = "show";
+        if (command == null) command = "home";
 
         String template = "";
         Map<String, Object> model = new HashMap<>();
 
         //TODO: Add more URL commands to the servlet
         switch (command) {
-
+            case "home":
+                List<ToDoList> todoLists = todoListDao.getAll();
+                template = "home.ftl";
+                model.put("todoLists", todoLists);
+                break;
             case "show":
                 String indexParam = request.getParameter("index");
                 int index = (indexParam == null) ? 0 : Integer.parseInt(indexParam);
