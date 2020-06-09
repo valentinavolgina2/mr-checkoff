@@ -43,6 +43,7 @@ public class ToDoListServlet extends HttpServlet {
         
 
         todoListDao = new ToDoListMemoryDAO();
+        todoListDao.insert(new ToDoList("Test list", 1));
         demoMemoryDao = new DemoPojoMemoryDAO();
         addDemoData();
 
