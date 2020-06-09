@@ -21,11 +21,12 @@
 
         <table border="1">
             <tr>
-                <th>
+                <th></th><th>List Name</th>
             </tr>
             <#list todoLists as todoList>
             <tr>
-                
+                <td><input type = "checkbox"></td>
+                <td><input type = "text" value = "Task #1"></td>
             </tr>
             </#list>
         </table><br />
