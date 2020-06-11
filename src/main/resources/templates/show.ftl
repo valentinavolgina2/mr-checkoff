@@ -1,15 +1,17 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Display Item</title>
+        <title>Mr.Checkoff - Show</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
     <body>
-        <h1>Item Viewer</h1>
-        <h2>${item.name}</h2>
+        <div style="float: right">
+            Log In | Sign Up
+        </div>
 
-        <a href="?cmd=show&index=${prevIndex}">Previous</a> &nbsp; &nbsp;
-        <a href="?cmd=show&index=${nextIndex}">Next</a><br/>
+        <h1>Mr. Checkoff</h1>
+        <h2>${todoList.description}</h2>
+
     </body>
 </html>

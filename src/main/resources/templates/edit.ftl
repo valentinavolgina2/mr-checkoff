@@ -1,15 +1,28 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Display Item</title>
+        <title>Mr.Checkoff - Edit</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
     <body>
-        <h1>Item Viewer</h1>
-        <h2>${item.name}</h2>
+        <div style="float: right">
+            Log In | Sign Up
+        </div>
 
-        <a href="?cmd=show&index=${prevIndex}">Previous</a> &nbsp; &nbsp;
-        <a href="?cmd=show&index=${nextIndex}">Next</a><br/>
+        <h1>Mr. Checkoff</h1>
+        <h2>Add / Edit List:</h2>
+        <h3>${todoList.description}</h3>
+
+        <table border="1">
+            <tr>
+                <th>Item Name</th>
+            </tr>
+            
+            <tr>
+                <td><input type="checkbox"/>${item.description}</td>
+            </tr>
+            
+        </table><br />
     </body>
 </html>
