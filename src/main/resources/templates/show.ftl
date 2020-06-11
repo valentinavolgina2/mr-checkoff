@@ -12,6 +12,16 @@
 
         <h1>Mr. Checkoff</h1>
         <h2>${todoList.description}</h2>
-
+    
+        <table border="1">
+            <tr>
+                <th>Item Name</th>
+            </tr>
+            
+            <tr>
+                <td><${item.description}</td>
+            </tr>
+            
+        </table><br />
     </body>
 </html>

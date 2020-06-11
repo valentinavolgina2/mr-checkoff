@@ -20,7 +20,7 @@
             </tr>
             
             <tr>
-                <td><input type="checkbox"/>${item.description}</td>
+                <td><${item.description}</td>
             </tr>
             
         </table><br />
