@@ -7,7 +7,7 @@
     </head>
     <body>
         <div style="float: right">
-            Already signed up? Log in
+            Already signed up? <a href="?cmd=login">Log In</a>
         </div>
 
         <h1>Mr. Checkoff</h1>
@@ -15,11 +15,14 @@
 
         <form action="?cmd=signup" method="post">
 
-            Email: <input type="text" name="username" size=60 /><br />
-            Password: <input type="text" name="password" size=60 /><br />
+            First Name: <input type="text" name="firstName" size=60 required/><br />
+            Last Name: <input type="text" name="lastName" size=60 /><br />
+            Email: <input type="text" name="email" size=60 required/><br />
+            Username: <input type="text" name="username" size=60 required/><br />
+            Password: <input type="text" name="password" size=60 required/><br />
 
             <input type="submit" value="Submit" />
-            <input class="button" type="button" value="Cancel" />
+            <input class="button" type="button" onclick="window.location.replace('/todo/lists')" value="Cancel" />
         </form><br />
     </body>
 </html>

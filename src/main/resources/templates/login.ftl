@@ -7,20 +7,21 @@
     </head>
     <body>
         <div style="float: right">
-            Don't have an account? Sign Up
+            Don't have an account? <a href="?cmd=sigup">Sign Up</a>
         </div>
 
-        <h1>Mr. Checkoff</h1>
-        <h2>Log in to your account</h2>
+        <#if loggedIn>
+            <h1>Mr. Checkoff</h1>
+            <h2>Log in to your account:</h2>
+        <#else>
+            <form action="?cmd=login" method="post">
 
-        <form action="?cmd=login" method="post">
+                Email: <input type="email" name="username" size=60 /><br />
+                Password: <input type="password" name="password" size=60 /><br />
 
-            Email: <input type="text" name="username" size=60 /><br />
-            Password: <input type="password" name="password" size=60 /><br />
-
-            <input type="submit" value="Submit" />
-            <input class="button" type="button" value="Cancel" />
-        </form><br />
-        
+                <input type="submit" value="Submit" />
+                <input class="button" type="button" value="Cancel" />
+            </form><br />
+        </#if>
     </body>
 </html>
