@@ -53,6 +53,7 @@ public class SQLUtils {
             if (query.contains("update ") || query.contains("delete ")) {
 
                 int numRows = stmt.executeUpdate();
+
                 return results(numRows);
 
             } else if (query.contains("select ")) {

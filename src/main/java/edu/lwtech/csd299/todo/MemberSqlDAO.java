@@ -165,15 +165,15 @@ public class MemberSqlDAO implements DAO<Member> {
             return 0;
         }
 
-        String value = rows.get(0).getItem();
+        String value = rows.get(0).getItem("count(*)");
         return Integer.parseInt(value);
     }
 
     public Member search(String fieldName, String keyword) {
-        logger.debug("Trying to get Member with " + fieldName + " = : " + keyword);
+        logger.debug("Trying to find Member with " + fieldName + " = : " + keyword);
 
         String query = "SELECT id, username, password, first_name, last_name, email";
-        query += " FROM Members WHERE " + fieldName + "=" + keyword;
+        query += " FROM Members WHERE " + fieldName + " = '" + keyword + "'";
 
         List<SQLRow> rows = SQLUtils.executeSQL(conn, query);
 
