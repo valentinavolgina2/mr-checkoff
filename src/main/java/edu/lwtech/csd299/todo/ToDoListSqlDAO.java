@@ -74,7 +74,7 @@ public class ToDoListSqlDAO implements DAO<ToDoList> {
 
         List<SQLRow> rows = SQLUtils.executeSQL(conn, query);
 
-        if (rows != null) {
+        if (rows != null && rows.size() > 0) {
             logger.debug("Found todo list!");
         } else {
             logger.debug("Did not find todo list.");
@@ -174,7 +174,7 @@ public class ToDoListSqlDAO implements DAO<ToDoList> {
 
         List<SQLRow> rows = SQLUtils.executeSQL(conn, query);
 
-        if (rows != null) {
+        if (rows != null && rows.size() > 0) {
             logger.debug("Found todo list!");
         } else {
             logger.debug("Did not find todo list.");

@@ -78,7 +78,7 @@ public class ItemSqlDAO implements DAO<Item> {
 
         List<SQLRow> rows = SQLUtils.executeSQL(conn, query);
 
-        if (rows != null) {
+        if (rows != null && rows.size() > 0) {
             logger.debug("Found item!");
         } else {
             logger.debug("Did not find item.");
@@ -103,7 +103,7 @@ public class ItemSqlDAO implements DAO<Item> {
 
         List<SQLRow> rows = SQLUtils.executeSQL(conn, query);
 
-        if (rows == null) {
+        if (rows == null || rows.size() == 0) {
             logger.debug("Did not find item.");
             return null;
         }
@@ -178,7 +178,7 @@ public class ItemSqlDAO implements DAO<Item> {
 
         List<SQLRow> rows = SQLUtils.executeSQL(conn, query);
 
-        if (rows != null) {
+        if (rows != null && rows.size() > 0) {
             logger.debug("Found item!");
         } else {
             logger.debug("Did not find item.");

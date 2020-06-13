@@ -14,7 +14,7 @@ public class MemberSqlDAOTests {
     @Before
     public void setUp() {
 
-        // there 3 members added in MySQL Workbench
+        // // there 3 members added in MySQL Workbench
         // fred = new Member("FredLwtech", "111", "Fred", "", "fred@lwtech.edu");
         // tom = new Member("TomLwtech", "222", "Tom", "", "tom@lwtech.edu");
         // mary = new Member("MaryLwtech", "333", "Mary", "", "mary@lwtech.edu");
@@ -39,6 +39,9 @@ public class MemberSqlDAOTests {
         // Member member = memoryDAO.getByID(memberID);
         // assertEquals(memberID, member.getID());
         // memoryDAO.delete(memberID);
+
+        // member = memoryDAO.getByID(1000);
+        // assertNull(member);
     }
 
     @Test
@@ -89,6 +92,9 @@ public class MemberSqlDAOTests {
 
         // assertEquals(memberID, member.getID());
         // memoryDAO.delete(memberID);
+
+        // member = memoryDAO.search("username", "Mr");
+        // assertNull(member);
     }
 
 }

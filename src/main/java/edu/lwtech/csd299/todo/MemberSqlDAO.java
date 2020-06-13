@@ -77,7 +77,7 @@ public class MemberSqlDAO implements DAO<Member> {
 
         List<SQLRow> rows = SQLUtils.executeSQL(conn, query);
 
-        if (rows != null) {
+        if (rows != null && rows.size() > 0) {
             logger.debug("Found member!");
         } else {
             logger.debug("Did not find member.");
@@ -177,7 +177,7 @@ public class MemberSqlDAO implements DAO<Member> {
 
         List<SQLRow> rows = SQLUtils.executeSQL(conn, query);
 
-        if (rows != null) {
+        if (rows != null && rows.size() > 0) {
             logger.debug("Found member!");
         } else {
             logger.debug("Did not find member.");
