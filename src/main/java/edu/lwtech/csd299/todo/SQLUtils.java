@@ -56,6 +56,20 @@ public class SQLUtils {
 
                 return results(numRows);
 
+            } else if (query.contains("count(*) ")) {
+
+                // Execute the SELECT query
+                ResultSet sqlResults = stmt.executeQuery();
+
+                // Store each row in a List
+                List<SQLRow> rows = new ArrayList<>();
+                if (sqlResults.next()) {
+                    SQLRow row = new SQLRow(sqlResults.getString(1));
+                    logger.debug(row.toString());
+                    rows.add(row);
+                }
+
+                return rows;
             } else if (query.contains("select ")) {
 
                 // Execute the SELECT query

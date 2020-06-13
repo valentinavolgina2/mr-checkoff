@@ -165,7 +165,7 @@ public class MemberSqlDAO implements DAO<Member> {
             return 0;
         }
 
-        String value = rows.get(0).getItem("count(*)");
+        String value = rows.get(0).getItem();
         return Integer.parseInt(value);
     }
 
