@@ -33,7 +33,7 @@ public class ItemSqlDAO implements DAO<Item> {
     public int insert(Item item) {
         logger.debug("Inserting " + item + "...");
 
-        if (item.getID() != -1) {
+        if (item.getId() != -1) {
             logger.error("Attempting to add previously added item: " + item);
             return -1;
         }
@@ -51,12 +51,12 @@ public class ItemSqlDAO implements DAO<Item> {
     }
 
     public boolean update(Item item) {
-        logger.debug("Updating item with id = " + item.getID());
+        logger.debug("Updating item with id = " + item.getId());
 
         String completed = item.isCompleted() ? "1" : "0";
 
         String query = "UPDATE Items " + "SET list_id='" + item.getListID() + "', name = '" + item.getName()
-                + "', completed = '" + completed + "' " + "WHERE id='" + item.getID() + "'";
+                + "', completed = '" + completed + "' " + "WHERE id='" + item.getId() + "'";
 
         List<SQLRow> rows = SQLUtils.executeSQL(conn, query);
 

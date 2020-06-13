@@ -38,7 +38,7 @@ public class Member {
         this.email = email;
     }
 
-    public int getID() {
+    public int getId() {
         return id;
     }
 

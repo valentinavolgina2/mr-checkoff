@@ -34,7 +34,7 @@ public class MemberSqlDAO implements DAO<Member> {
     public int insert(Member member) {
         logger.debug("Inserting " + member + "...");
 
-        if (member.getID() != -1) {
+        if (member.getId() != -1) {
             logger.error("Attempting to add previously added Member: " + member);
             return -1;
         }
@@ -51,11 +51,11 @@ public class MemberSqlDAO implements DAO<Member> {
     }
 
     public boolean update(Member member) {
-        logger.debug("Updating member's data for member with id = " + member.getID());
+        logger.debug("Updating member's data for member with id = " + member.getId());
 
         String query = "UPDATE Members " + "SET username='" + member.getUsername() + "', password='"
                 + member.getPassword() + "', first_name='" + member.getFirstName() + "', last_name='"
-                + member.getLastName() + "', email='" + member.getEmail() + "' " + "WHERE id='" + member.getID() + "'";
+                + member.getLastName() + "', email='" + member.getEmail() + "' " + "WHERE id='" + member.getId() + "'";
 
         List<SQLRow> rows = SQLUtils.executeSQL(conn, query);
 

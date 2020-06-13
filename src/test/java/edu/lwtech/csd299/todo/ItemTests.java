@@ -38,8 +38,8 @@ public class ItemTests {
 
     @Test
     public void getIdTest() {
-        assertEquals(-1, newItem.getID());
-        assertEquals(10, dbItem.getID());
+        assertEquals(-1, newItem.getId());
+        assertEquals(10, dbItem.getId());
     }
 
     @Test
@@ -74,7 +74,7 @@ public class ItemTests {
         assertFalse(dbItem.equals(new Item("Item #10", 1)));
         assertFalse(dbItem.equals(10));
         assertTrue(dbItem.equals(dbItem));
-        assertTrue(dbItem.equals(new Item(dbItem.getID(), dbItem.getName(), dbItem.isCompleted(), dbItem.getListID())));
+        assertTrue(dbItem.equals(new Item(dbItem.getId(), dbItem.getName(), dbItem.isCompleted(), dbItem.getListID())));
     }
 
 }

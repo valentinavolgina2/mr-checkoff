@@ -38,8 +38,8 @@ public class ToDoListTests {
 
     @Test
     public void getIdTest() {
-        assertEquals(-1, newToDoList.getID());
-        assertEquals(10, dbToDoList.getID());
+        assertEquals(-1, newToDoList.getId());
+        assertEquals(10, dbToDoList.getId());
     }
 
     @Test
@@ -66,7 +66,7 @@ public class ToDoListTests {
         assertFalse(dbToDoList.equals(10));
         assertTrue(dbToDoList.equals(dbToDoList));
         assertTrue(dbToDoList
-                .equals(new ToDoList(dbToDoList.getID(), dbToDoList.getDescription(), dbToDoList.getOwnerID())));
+                .equals(new ToDoList(dbToDoList.getId(), dbToDoList.getDescription(), dbToDoList.getOwnerID())));
     }
 
 }

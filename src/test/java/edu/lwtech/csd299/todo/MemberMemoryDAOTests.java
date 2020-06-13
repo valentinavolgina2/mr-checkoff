@@ -44,9 +44,9 @@ public class MemberMemoryDAOTests {
     @Test
     public void getByIDTest() {
         Member member = memoryDAO.getByID(1000);
-        assertEquals(1000, member.getID());
+        assertEquals(1000, member.getId());
         member = memoryDAO.getByID(1001);
-        assertEquals(1001, member.getID());
+        assertEquals(1001, member.getId());
     }
 
     @Test
@@ -70,9 +70,9 @@ public class MemberMemoryDAOTests {
     @Test
     public void getByIndexTest() {
         Member member = memoryDAO.getByIndex(0);
-        assertEquals(1000, member.getID());
+        assertEquals(1000, member.getId());
         member = memoryDAO.getByIndex(1);
-        assertEquals(1001, member.getID());
+        assertEquals(1001, member.getId());
     }
 
     @Test
@@ -92,9 +92,9 @@ public class MemberMemoryDAOTests {
     @Test
     public void searchTest() {
         Member member = memoryDAO.search("username", "FredLwtech");
-        assertEquals(1000, member.getID());
+        assertEquals(1000, member.getId());
         member = memoryDAO.search("email", "tom@lwtech.edu");
-        assertEquals(1001, member.getID());
+        assertEquals(1001, member.getId());
         member = memoryDAO.search("username", "some user");
         assertNull(member);
     }

@@ -22,7 +22,7 @@ public class ItemMemoryDAO implements DAO<Item> {
     public int insert(Item item) {
         logger.debug("Inserting " + item + "...");
 
-        if (item.getID() != -1) {
+        if (item.getId() != -1) {
             logger.error("Attempting to add previously added item: " + item);
             return -1;
         }
@@ -31,7 +31,7 @@ public class ItemMemoryDAO implements DAO<Item> {
         memoryDB.add(item);
 
         logger.debug("Item was successfully inserted!");
-        return item.getID();
+        return item.getId();
     }
 
     public void delete(int id) {
@@ -39,7 +39,7 @@ public class ItemMemoryDAO implements DAO<Item> {
 
         Item itemFound = null;
         for (Item item : memoryDB) {
-            if (item.getID() == id) {
+            if (item.getId() == id) {
                 itemFound = item;
                 break;
             }
@@ -56,12 +56,12 @@ public class ItemMemoryDAO implements DAO<Item> {
 
     public boolean update(Item item) {
 
-        int id = item.getID();
+        int id = item.getId();
         logger.debug("Trying to update item with ID: " + id);
 
         Item itemFound = null;
         for (Item oldItem : memoryDB) {
-            if (oldItem.getID() == id) {
+            if (oldItem.getId() == id) {
                 itemFound = oldItem;
                 break;
             }
@@ -84,7 +84,7 @@ public class ItemMemoryDAO implements DAO<Item> {
 
         Item itemFound = null;
         for (Item item : memoryDB) {
-            if (item.getID() == id) {
+            if (item.getId() == id) {
                 itemFound = item;
                 break;
             }
@@ -122,7 +122,7 @@ public class ItemMemoryDAO implements DAO<Item> {
 
         List<Integer> itemIDs = new ArrayList<>();
         for (Item item : memoryDB) {
-            itemIDs.add(item.getID());
+            itemIDs.add(item.getId());
         }
         return itemIDs;
     }

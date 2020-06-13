@@ -44,9 +44,9 @@ public class ToDoListMemoryDAOTests {
     @Test
     public void getByIDTest() {
         ToDoList todoList = memoryDAO.getByID(1000);
-        assertEquals(1000, todoList.getID());
+        assertEquals(1000, todoList.getId());
         todoList = memoryDAO.getByID(1001);
-        assertEquals(1001, todoList.getID());
+        assertEquals(1001, todoList.getId());
         assertNull(memoryDAO.getByID(1002));
     }
 
@@ -71,9 +71,9 @@ public class ToDoListMemoryDAOTests {
     @Test
     public void getByIndexTest() {
         ToDoList todoList = memoryDAO.getByIndex(0);
-        assertEquals(1000, todoList.getID());
+        assertEquals(1000, todoList.getId());
         todoList = memoryDAO.getByIndex(1);
-        assertEquals(1001, todoList.getID());
+        assertEquals(1001, todoList.getId());
     }
 
     @Test
@@ -93,9 +93,9 @@ public class ToDoListMemoryDAOTests {
     @Test
     public void searchTest() {
         ToDoList todoList = memoryDAO.search("description", "list #1");
-        assertEquals(1000, todoList.getID());
+        assertEquals(1000, todoList.getId());
         todoList = memoryDAO.search("description", "List #2");
-        assertEquals(1001, todoList.getID());
+        assertEquals(1001, todoList.getId());
         todoList = memoryDAO.search("description", "some list");
         assertNull(todoList);
     }
@@ -103,8 +103,8 @@ public class ToDoListMemoryDAOTests {
     @Test
     public void getByOwnerIDTest() {
         List<ToDoList> ownerToDoLists = memoryDAO.getByOwnerID(1000);
-        assertEquals(1000, ownerToDoLists.get(0).getID());
-        assertEquals(1001, ownerToDoLists.get(1).getID());
+        assertEquals(1000, ownerToDoLists.get(0).getId());
+        assertEquals(1001, ownerToDoLists.get(1).getId());
         assertEquals(2, ownerToDoLists.size());
         ownerToDoLists = memoryDAO.getByOwnerID(1001);
         assertEquals(0, ownerToDoLists.size());

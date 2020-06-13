@@ -30,7 +30,7 @@ public class ToDoList {
         this.ownerID = ownerID;
     }
 
-    public int getID() {
+    public int getId() {
         return id;
     }
 

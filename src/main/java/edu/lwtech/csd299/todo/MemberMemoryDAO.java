@@ -24,7 +24,7 @@ public class MemberMemoryDAO implements DAO<Member> {
     public int insert(Member member) {
         logger.debug("Inserting " + member + "...");
 
-        if (member.getID() != -1) {
+        if (member.getId() != -1) {
             logger.error("Attempting to add previously added member: " + member);
             return -1;
         }
@@ -33,7 +33,7 @@ public class MemberMemoryDAO implements DAO<Member> {
         memoryDB.add(member);
 
         logger.debug("Member successfully inserted!");
-        return member.getID();
+        return member.getId();
     }
 
     public void delete(int id) {
@@ -41,7 +41,7 @@ public class MemberMemoryDAO implements DAO<Member> {
 
         Member memberFound = null;
         for (Member member : memoryDB) {
-            if (member.getID() == id) {
+            if (member.getId() == id) {
                 memberFound = member;
                 break;
             }
@@ -58,12 +58,12 @@ public class MemberMemoryDAO implements DAO<Member> {
 
     public boolean update(Member member) {
 
-        int id = member.getID();
+        int id = member.getId();
         logger.debug("Trying to update member with ID: " + id);
 
         Member memberFound = null;
         for (Member oldMember : memoryDB) {
-            if (oldMember.getID() == id) {
+            if (oldMember.getId() == id) {
                 memberFound = oldMember;
                 break;
             }
@@ -86,7 +86,7 @@ public class MemberMemoryDAO implements DAO<Member> {
 
         Member memberFound = null;
         for (Member member : memoryDB) {
-            if (member.getID() == id) {
+            if (member.getId() == id) {
                 memberFound = member;
                 break;
             }
@@ -124,7 +124,7 @@ public class MemberMemoryDAO implements DAO<Member> {
 
         List<Integer> memberIDs = new ArrayList<>();
         for (Member member : memoryDB) {
-            memberIDs.add(member.getID());
+            memberIDs.add(member.getId());
         }
         return memberIDs;
     }

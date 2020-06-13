@@ -33,7 +33,7 @@ public class ToDoListSqlDAO implements DAO<ToDoList> {
     public int insert(ToDoList list) {
         logger.debug("Inserting " + list + "...");
 
-        if (list.getID() != -1) {
+        if (list.getId() != -1) {
             logger.error("Attempting to add previously added To-Do list: " + list);
             return -1;
         }
@@ -49,10 +49,10 @@ public class ToDoListSqlDAO implements DAO<ToDoList> {
     }
 
     public boolean update(ToDoList list) {
-        logger.debug("Updating todo list's data for todo list with id = " + list.getID());
+        logger.debug("Updating todo list's data for todo list with id = " + list.getId());
 
         String query = "UPDATE ToDoLIsts " + "SET owner_id='" + list.getOwnerID() + "', description='"
-                + list.getDescription() + "' " + "WHERE id='" + list.getID() + "'";
+                + list.getDescription() + "' " + "WHERE id='" + list.getId() + "'";
 
         List<SQLRow> rows = SQLUtils.executeSQL(conn, query);
 

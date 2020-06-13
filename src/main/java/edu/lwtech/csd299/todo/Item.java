@@ -29,7 +29,7 @@ public class Item implements Cloneable {
         this.listID = listID;
     }
 
-    public int getID() {
+    public int getId() {
         return id;
     }
 

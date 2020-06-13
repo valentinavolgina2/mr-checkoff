@@ -70,9 +70,9 @@ public class MemberTests {
 
     @Test
     public void getIdTest() {
-        assertEquals(-1, newMember.getID());
-        assertEquals(10, member.getID());
-        assertEquals(11, copyMember.getID());
+        assertEquals(-1, newMember.getId());
+        assertEquals(10, member.getId());
+        assertEquals(11, copyMember.getId());
     }
 
     @Test

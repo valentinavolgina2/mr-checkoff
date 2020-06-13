@@ -24,7 +24,7 @@ public class ToDoListMemoryDAO implements DAO<ToDoList> {
     public int insert(ToDoList todoList) {
         logger.debug("Inserting " + todoList + "...");
 
-        if (todoList.getID() != -1) {
+        if (todoList.getId() != -1) {
             logger.error("Attempting to add previously added to-do list: " + todoList);
             return -1;
         }
@@ -33,7 +33,7 @@ public class ToDoListMemoryDAO implements DAO<ToDoList> {
         memoryDB.add(todoList);
 
         logger.debug("To-do list was successfully inserted!");
-        return todoList.getID();
+        return todoList.getId();
     }
 
     public void delete(int id) {
@@ -41,7 +41,7 @@ public class ToDoListMemoryDAO implements DAO<ToDoList> {
 
         ToDoList todoListFound = null;
         for (ToDoList todoList : memoryDB) {
-            if (todoList.getID() == id) {
+            if (todoList.getId() == id) {
                 todoListFound = todoList;
                 break;
             }
@@ -58,12 +58,12 @@ public class ToDoListMemoryDAO implements DAO<ToDoList> {
 
     public boolean update(ToDoList todoList) {
 
-        int id = todoList.getID();
+        int id = todoList.getId();
         logger.debug("Trying to update to-do list with ID: " + id);
 
         ToDoList todoListFound = null;
         for (ToDoList oldToDoList : memoryDB) {
-            if (oldToDoList.getID() == id) {
+            if (oldToDoList.getId() == id) {
                 todoListFound = oldToDoList;
                 break;
             }
@@ -86,7 +86,7 @@ public class ToDoListMemoryDAO implements DAO<ToDoList> {
 
         ToDoList todoListFound = null;
         for (ToDoList todoList : memoryDB) {
-            if (todoList.getID() == id) {
+            if (todoList.getId() == id) {
                 todoListFound = todoList;
                 break;
             }
@@ -124,7 +124,7 @@ public class ToDoListMemoryDAO implements DAO<ToDoList> {
 
         List<Integer> todoListIDs = new ArrayList<>();
         for (ToDoList todoList : memoryDB) {
-            todoListIDs.add(todoList.getID());
+            todoListIDs.add(todoList.getId());
         }
         return todoListIDs;
     }
