@@ -78,20 +78,11 @@ public class ToDoListServlet extends HttpServlet {
 
                 String idParam = request.getParameter("listId");
                 int id = (idParam == null) ? 0 : Integer.parseInt(idParam);
-
-                /*String indexParam = request.getParameter("index");
-                int index = (indexParam == null) ? 0 : Integer.parseInt(indexParam);
-                int numItems = demoMemoryDao.getAllIDs().size();
-                int nextIndex = (index + 1) % numItems;
-                int prevIndex = index - 1;
-                if (prevIndex < 0) prevIndex = numItems-1;*/
-               /*model.put("item", demoMemoryDao.getByIndex(index));
-                model.put("prevIndex", prevIndex);
-                model.put("nextIndex", nextIndex);*/
                 
                 ToDoList todoList = todoListDao.getByID(id);
                 List<Item> items = itemMemoryDao.getByOwnerID(id);
                 model.put("todoList", todoList);
+                model.put("item", items);
                 template = "show.ftl";
 
                 break;
