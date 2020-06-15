@@ -23,7 +23,7 @@
             </tr>
             <#list todoLists as todoList>
             <tr>
-                <td><input type="checkbox"><a href="?cmd=show&id=${todoList.id?c}">${todoList.description}</a><input/></td>
+                <td><input type="checkbox"/><a href="?cmd=show&id=${todoList.id?c}">${todoList.description}</a></td>
             </tr>
             </#list>
         </table><br />
