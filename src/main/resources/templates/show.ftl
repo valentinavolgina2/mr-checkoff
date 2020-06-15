@@ -10,15 +10,15 @@
             <#if loggedIn>
                 Hello ${member.firstName}! | <a href="?cmd=logout">Log Out</a>
             <#else>
-                <a href="?cmd=login">Log In</a> | <a href="?cmd=sigup">Sign Up</a>
+                <a href="?cmd=login">Log In</a> | <a href="?cmd=signup">Sign Up</a>
             </#if>
         </div>
 
         <h1><a href="?cmd=home">Mr.Checkoff</a></h1>
         <h2>${todoList.description}</h2>
     
-        <a href="?cmd=edit">Edit This List</a><br>
-        Delete This List
+        <a href="?cmd=edit&id=${todoList.id?c}">Edit list</a><br>
+        <a href="?cmd=delete&id=${todoList.id?c}">Delete list</a>
         <br><br>
 
         <table border="1">

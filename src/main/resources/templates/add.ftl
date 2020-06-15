@@ -10,7 +10,7 @@
             <#if loggedIn>
                 Hello ${member.firstName}! | <a href="?cmd=logout">Log Out</a>
             <#else>
-                <a href="?cmd=login">Log In</a> | <a href="?cmd=sigup">Sign Up</a>
+                <a href="?cmd=login">Log In</a> | <a href="?cmd=signup">Sign Up</a>
             </#if>
         </div>
 

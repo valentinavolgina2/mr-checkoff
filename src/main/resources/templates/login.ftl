@@ -7,7 +7,7 @@
     </head>
     <body>
         <div style="float: right">
-            Don't have an account? <a href="?cmd=sigup">Sign Up</a>
+            Don't have an account? <a href="?cmd=signup">Sign Up</a>
         </div>
 
         <#if loggedIn>
