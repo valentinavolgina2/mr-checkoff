@@ -19,12 +19,15 @@ public class ToDoListServlet extends HttpServlet {
     private static final String TEMPLATE_DIR = "/WEB-INF/classes/templates";
     private static final Configuration freemarker = new Configuration(Configuration.getVersion());
 
-    private DAO<Member> memberMemoryDao = null;
-    private DAO<DemoPojo> demoMemoryDao = null;
+    private DAO<Member> memberDao = null;
     private DAO<ToDoList> todoListDao = null;
-    private DAO<Item> itemMemoryDao = null;
+    private DAO<Item> itemDAO = null;
 
-    private static int currentListIndex = 0;
+    private DAO<Member> memberSessionDao = null;
+    private DAO<ToDoList> todoListSessionDao = null;
+    private DAO<Item> itemSessionDAO = null;
+
+    private int sessionDuration = 10 * 1000; // 10 seconds
 
     @Override
     public void init(ServletConfig config) throws ServletException {
@@ -45,18 +48,7 @@ public class ToDoListServlet extends HttpServlet {
         }
         logger.info("Successfully Loaded Freemarker");
 
-        memberMemoryDao = new MemberMemoryDAO();
-        Member member = new Member("1", "1", "Ryan", "A", "f@m.com");
-        int memberID = memberMemoryDao.insert(member);
-
-        todoListDao = new ToDoListMemoryDAO();
-        ToDoList todolist = new ToDoList("Test list", memberID);
-        int listID = todoListDao.insert(todolist);
-
-        itemMemoryDao = new ItemMemoryDAO();
-        itemMemoryDao.insert(new Item("Item 1", listID));
-        itemMemoryDao.insert(new Item("Item 2", listID));
-        // addDemoData();
+        addDemoData();
 
         logger.warn("Initialize complete!");
     }
@@ -66,36 +58,188 @@ public class ToDoListServlet extends HttpServlet {
         logger.debug("IN - GET " + request.getRequestURI());
         long startTime = System.currentTimeMillis();
 
+        Date now = new Date();
+
         String command = request.getParameter("cmd");
         if (command == null)
             command = "home";
 
-        String template = "";
+        int memberID = 0;
+        boolean loggedIn = false;
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            try {
+                memberID = Integer.parseInt((String) session.getAttribute("owner"));
+                loggedIn = true;
+                logger.debug("-----Registered user -----");
+            } catch (Exception e) {
+
+                if (now.getTime() - session.getLastAccessedTime() > sessionDuration) {
+                    session.invalidate();
+                    expireSession(response);
+                    return;
+                    // session = request.getSession(true);
+                    // session.setAttribute("owner", session.getId());
+                }
+                memberID = -1;
+                loggedIn = false;
+                logger.debug("-----Unregistered user----- ");
+            }
+        } else {
+            // create new session
+            session = request.getSession(true);
+            session.setAttribute("owner", session.getId());
+
+            memberID = -1;
+            loggedIn = false;
+            logger.debug("-----Session is null -----");
+        }
+
+        String template = null; // 404 will be returned if template isn't set inside the switch statement
+
         Map<String, Object> model = new HashMap<>();
+        model.put("member", memberDao.getByID(memberID));
+        model.put("loggedIn", loggedIn);
 
-        model.put("loggedIn", false);
+        int listID;
+        List<Item> items = null;
+        ToDoList todoList;
+        String message;
 
-        // TODO: Add more URL commands to the servlet
         switch (command) {
             case "home":
-                List<ToDoList> todoLists = todoListDao.getAll();
+
+                List<ToDoList> todoLists = new ArrayList<>();
+                if (loggedIn) {
+                    todoLists = todoListDao.getByOwnerID(memberID);
+                    // todoLists = todoListDao.getAll();
+                } else {
+                    Object o = session.getAttribute("list");
+                    if (o != null) {
+                        todoList = (ToDoList) o;
+                        todoLists.add(todoList);
+                    }
+
+                }
+
                 template = "home.ftl";
                 model.put("todoLists", todoLists);
+
                 break;
             case "show":
-
-                String idParam = request.getParameter("id");
-                int id = (idParam == null) ? 0 : Integer.parseInt(idParam);
-                
-                ToDoList todoList = todoListDao.getByID(id);
-                List<Item> items = itemMemoryDao.getByOwnerID(id);
-                model.put("todoList", todoList);
-                model.put("items", items);
                 template = "show.ftl";
 
+                if (loggedIn) {
+                    listID = parseInt(request.getParameter("id"));
+                    todoList = todoListDao.getByID(listID);
+                    items = itemDAO.getByOwnerID(listID);
+                } else {
+                    todoList = (ToDoList) session.getAttribute("list");
+                    Object o = session.getAttribute("items");
+                    if (o != null) {
+                        items = (List<Item>) o;
+                    } else {
+                        items = new ArrayList<Item>();
+                    }
+
+                }
+
+                model.put("items", items);
+                model.put("todoList", todoList);
                 break;
+
+            case "delete-item":
+                template = "edit.ftl";
+                int itemID = parseInt(request.getParameter("itemId"));
+
+                if (loggedIn) {
+                    itemDAO.delete(itemID);
+
+                    listID = parseInt(request.getParameter("listId"));
+                    todoList = todoListDao.getByID(listID);
+                    items = itemDAO.getByOwnerID(listID);
+                } else {
+                    todoList = (ToDoList) session.getAttribute("list");
+                    items = (List<Item>) session.getAttribute("items");
+                    items.remove(itemID);
+                    session.setAttribute("items", items);
+                }
+
+                model.put("items", items);
+                model.put("todoList", todoList);
+                model.put("count", items.size());
+                break;
+
+            case "edit":
+                template = "edit.ftl";
+
+                if (loggedIn) {
+                    listID = parseInt(request.getParameter("id"));
+                    todoList = todoListDao.getByID(listID);
+                    items = itemDAO.getByOwnerID(listID);
+                } else {
+                    todoList = (ToDoList) session.getAttribute("list");
+                    Object o = session.getAttribute("items");
+                    if (o != null) {
+                        items = (List<Item>) o;
+                    } else {
+                        items = new ArrayList<Item>();
+                    }
+
+                }
+
+                model.put("items", items);
+                model.put("todoList", todoList);
+                model.put("count", items.size());
+                break;
+
+            case "create":
+                template = "edit.ftl";
+                model.put("items", new ArrayList<Item>());
+                model.put("count", 0);
+                break;
+
+            case "delete":
+                message = "";
+                template = "confirm.ftl";
+
+                if (loggedIn) {
+                    listID = parseInt(request.getParameter("id"));
+                    // delete items of the to-do list first
+                    items = itemDAO.getByOwnerID(listID);
+                    for (Item item : items) {
+                        itemDAO.delete(item.getId());
+                    }
+                    todoListDao.delete(listID);
+                } else {
+                    session.setAttribute("list", null);
+                    session.setAttribute("items", null);
+                }
+
+                message = "You have successfully deleted the to-do list.<br /><a href='?cmd=home'>Home</a>";
+                model.put("loggedIn", loggedIn);
+                model.put("message", message);
+                break;
+
             case "login":
                 template = "login.ftl";
+                break;
+
+            case "logout":
+                if (session != null) {
+                    session.invalidate();
+                }
+                template = "confirm.ftl";
+                model.put("message", "You have been successfully logged out.<br /><a href='?cmd=home'>Home</a>");
+                break;
+
+            case "signup":
+                if (session != null) {
+                    session.invalidate();
+                }
+                template = "signup.ftl";
+                break;
+
             default:
                 logger.debug("Unknown GET command received: " + command);
 
@@ -118,6 +262,8 @@ public class ToDoListServlet extends HttpServlet {
         logger.debug("IN -POST " + request.getRequestURI());
         long startTime = System.currentTimeMillis();
 
+        Date now = new Date();
+
         String command = request.getParameter("cmd");
         if (command == null)
             command = "";
@@ -130,6 +276,11 @@ public class ToDoListServlet extends HttpServlet {
                 owner = Integer.parseInt((String) session.getAttribute("owner"));
                 loggedIn = true;
             } catch (NumberFormatException e) {
+                if (now.getTime() - session.getLastAccessedTime() > sessionDuration) {
+                    session.invalidate();
+                    session = request.getSession(true);
+                    session.setAttribute("owner", session.getId());
+                }
                 owner = 0;
                 loggedIn = false;
             }
@@ -144,29 +295,83 @@ public class ToDoListServlet extends HttpServlet {
         String lastName = "";
         String email = "";
         Member member;
+        int listID;
+        ToDoList todoList = null;
+        List<Item> items = null;
 
         switch (command) {
 
-            case "create":
+            case "save":
                 ToDoList newList = getToDoListFromRequest(request, owner);
 
                 if (newList == null) {
                     logger.info("Create request ignored because one or more fields were empty.");
-                    message = "Your new ToDoList was not created because one or more fields were empty.<br /><a href='?cmd=home'>Home</a>";
+                    message = "Your new To-do list was not created because one or more fields were empty.<br /><a href='?cmd=home'>Home</a>";
                     break;
                 }
 
-                if (todoListDao.insert(newList) > 0)
-                    message = "Your new ToDoList has been created successfully.<br /><a href='?cmd=home'>Home</a>";
-                else
-                    message = "There was a problem adding your list to the database.<br /><a href='?cmd=home'>Home</a>";
+                List<Item> newItems = getItemsFromRequest(request, newList.getId());
+                message = "Your new TopTen List has been created successfully.<br /><a href='?cmd=home'>Home</a>";
+
+                if (loggedIn) {
+                    listID = newList.getId();
+                    if (listID == -1) {
+                        listID = todoListDao.insert(newList);
+                    } else {
+                        todoListDao.update(newList);
+                    }
+
+                    if (listID > 0) {
+                        for (Item item : newItems) {
+                            if (item.getId() == -1) {
+                                itemDAO.insert(item);
+                            } else {
+                                itemDAO.update(item);
+                            }
+                        }
+                        message = "Your To-Do List has been saved successfully.<br /><a href='?cmd=home'>Home</a>";
+                    } else {
+                        message = "There was a problem adding your list to the database.<br /><a href='?cmd=home'>Home</a>";
+                    }
+                } else {
+                    session.setAttribute("list", newList);
+                    session.setAttribute("items", newItems);
+                }
+
+                break;
+
+            case "add-item":
+                template = "edit.ftl";
+
+                Item newItem = getNewItemFromRequest(request);
+                if (loggedIn) {
+                    itemDAO.insert(newItem);
+                    listID = newItem.getListID();
+                    items = itemDAO.getByOwnerID(listID);
+                    todoList = todoListDao.getByID(listID);
+                } else {
+                    todoList = (ToDoList) session.getAttribute("list");
+                    Object o = session.getAttribute("items");
+                    if (o != null) {
+                        items = (List<Item>) o;
+                    } else {
+                        items = new ArrayList<Item>();
+                    }
+                    items.add(new Item(items.size(), newItem));
+                }
+
+                model.put("items", items);
+                model.put("todoList", todoList);
+                model.put("count", items.size());
+                model.put("member", memberDao.getByID(owner));
+                model.put("loggedIn", loggedIn);
                 break;
 
             case "login":
                 username = request.getParameter("username");
                 password = request.getParameter("password");
 
-                member = memberMemoryDao.search("username", username);
+                member = memberDao.search("username", username);
                 if (member == null) {
                     message = "We do not have a member with that username on file. Please try again.<br /><a href='?cmd=login'>Log In</a>";
                     model.put("loggedIn", loggedIn);
@@ -179,9 +384,11 @@ public class ToDoListServlet extends HttpServlet {
                     loggedIn = true;
 
                     session = request.getSession(true);
-                    session.setAttribute("owner", owner);
+                    session.setAttribute("owner", "" + owner);
 
-                    message = "You have been successfully logged in to your account.<br /><a href='?cmd=show'>Show Lists</a>";
+                    logger.info("Put owner " + owner + " into new session");
+
+                    message = "You have been successfully logged in to your account.<br /><a href='?cmd=home'>Show Lists</a>";
                 } else {
                     message = "Your password did not match what we have on file.  Please try again.<br /><a href='?cmd=login'>Log In</a>";
                 }
@@ -190,11 +397,14 @@ public class ToDoListServlet extends HttpServlet {
                 model.put("message", message);
                 break;
 
-            case "register":
+            case "signup":
                 username = request.getParameter("username");
                 password = request.getParameter("password");
+                firstName = request.getParameter("firstName");
+                lastName = request.getParameter("lastName");
+                email = request.getParameter("email");
 
-                member = memberMemoryDao.search("username", username);
+                member = memberDao.search("username", username);
                 if (member != null) {
                     message = "That username is already registered here. Please use a different username.<br /><a href='?cmd=login'>Log In</a>";
                     model.put("message", message);
@@ -202,12 +412,11 @@ public class ToDoListServlet extends HttpServlet {
                 }
 
                 member = new Member(username, password, firstName, lastName, email);
-                memberMemoryDao.insert(member);
+                memberDao.insert(member);
 
                 message = "Welcome to TopTopTenLists.com!  You are now a registered member. Please <a href='?cmd=login'>log in</a>.";
                 model.put("message", message);
                 break;
-            case "signup":
 
             default:
                 logger.info("Unknown POST command received: " + command);
@@ -229,6 +438,8 @@ public class ToDoListServlet extends HttpServlet {
         logger.info("OUT- GET " + request.getRequestURI() + " " + time + "ms");
     }
 
+    // TODO: doPost() goes here - if needed.
+
     @Override
     public void destroy() {
         logger.warn("-----------------------------------------");
@@ -239,24 +450,6 @@ public class ToDoListServlet extends HttpServlet {
     @Override
     public String getServletInfo() {
         return "mr-checkoff Servlet";
-    }
-
-    private ToDoList getToDoListFromRequest(HttpServletRequest request, int owner) {
-
-        String description = request.getParameter("description");
-        if (description == null)
-            return null;
-
-        List<String> items = new ArrayList<>();
-        for (int i = 10; i >= 1; i--) {
-            String item = request.getParameter("item" + i);
-            if (item == null || item.isEmpty())
-                return null;
-            items.add(item);
-        }
-
-        return null;
-        // return new ToDoList(description, items, owner);
     }
 
     // ========================================================================
@@ -277,11 +470,80 @@ public class ToDoListServlet extends HttpServlet {
     private void addDemoData() {
         logger.debug("Creating sample DemoPojos...");
 
-        demoMemoryDao.insert(new DemoPojo("Item I"));
-        demoMemoryDao.insert(new DemoPojo("Item II"));
-        demoMemoryDao.insert(new DemoPojo("Item III"));
+        todoListDao = new ToDoListMemoryDAO();
+        itemDAO = new ItemMemoryDAO();
+        memberDao = new MemberMemoryDAO();
+
+        int memberID = memberDao.insert(new Member("FredLwtech", "111", "Fred", "", "fred@lwtech.edu"));
+        int listID = todoListDao.insert(new ToDoList("List#1", memberID));
+        itemDAO.insert(new Item("Item 1.1", listID));
+        itemDAO.insert(new Item("Item 1.2", listID));
+
+        memberID = memberDao.insert(new Member("MaryLwtech", "333", "Mary", "", "mary@lwtech.edu"));
+        listID = todoListDao.insert(new ToDoList("List #2", memberID));
+        itemDAO.insert(new Item("Item 2.1", listID));
+        itemDAO.insert(new Item("Item 2.2", listID));
+        itemDAO.insert(new Item("Item 2.3", listID));
 
         logger.info("...items inserted");
+    }
+
+    private int parseInt(String s) {
+        int i = -1;
+        if (s != null) {
+            try {
+                i = Integer.parseInt(s);
+            } catch (NumberFormatException e) {
+                i = -2;
+            }
+        }
+        return i;
+    }
+
+    private ToDoList getToDoListFromRequest(HttpServletRequest request, int owner) {
+
+        logger.info("getToDoListFromRequest : ");
+
+        String description = request.getParameter("description");
+        int id = parseInt(request.getParameter("listID"));
+
+        return new ToDoList(id, description, owner);
+    }
+
+    private List<Item> getItemsFromRequest(HttpServletRequest request, int listID) {
+
+        logger.info("getItemsFromRequest : ");
+
+        List<Item> items = new ArrayList<>();
+        int size = parseInt(request.getParameter("count"));
+
+        for (int i = 0; i < size; i++) {
+            String name = request.getParameter("name" + i);
+            boolean completed = "on".equals(request.getParameter("completed" + i)) ? true : false;
+            int id = parseInt(request.getParameter("id" + i));
+
+            items.add(new Item(id, name, completed, listID));
+        }
+
+        return items;
+    }
+
+    private Item getNewItemFromRequest(HttpServletRequest request) {
+
+        logger.info("getNewItemFromRequest : ");
+
+        int listID = parseInt(request.getParameter("listID"));
+        String name = request.getParameter("newItem");
+
+        return new Item(name, listID);
+    }
+
+    private void expireSession(HttpServletResponse response) {
+        String template = "confirm.ftl";
+        Map<String, Object> model = new HashMap<>();
+        model.put("message", "Your session has been expired.<br /><a href='?cmd=home'>Home</a>");
+        processTemplate(response, template, model);
+
     }
 
 }
