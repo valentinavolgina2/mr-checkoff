@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Mr.Checkoff - Edit</title>
+        <title>Mr.Checkoff - Add</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
@@ -15,9 +15,10 @@
         </div>
 
         <h1><a href="?cmd=home">Mr.Checkoff</a></h1>
-        <h2>Edit List:</h2>
-        <h3>${todoList.description}</h3>
+        <h2>Add New List:</h2>
+        <br>
 
+        Enter List Name:<input type="text" name="listName" size="60"/><br><br>
         <table border="1">
             <tr>
                 <th>Item Name</th>
