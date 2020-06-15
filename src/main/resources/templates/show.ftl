@@ -21,9 +21,9 @@
             <tr>
                 <th>Item Name</th>
             </tr>
-            <#list item.listID as item>
+            <#list items as item>
             <tr>
-                <td><input type="checkbox"/><${item.description}</td>
+                <td><input type="checkbox"/>${item.name}</td>
             </tr>
             </#list>
         </table><br />
