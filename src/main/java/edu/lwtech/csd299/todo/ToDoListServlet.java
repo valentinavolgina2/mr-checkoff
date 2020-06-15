@@ -311,7 +311,7 @@ public class ToDoListServlet extends HttpServlet {
                 }
 
                 List<Item> newItems = getItemsFromRequest(request, newList.getId());
-                message = "Your new TopTen List has been created successfully.<br /><a href='?cmd=home'>Home</a>";
+                message = "Your new ToDo List has been created successfully.<br /><a href='?cmd=home'>Home</a>";
 
                 if (loggedIn) {
                     listID = newList.getId();
@@ -414,7 +414,7 @@ public class ToDoListServlet extends HttpServlet {
                 member = new Member(username, password, firstName, lastName, email);
                 memberDao.insert(member);
 
-                message = "Welcome to TopTopTenLists.com!  You are now a registered member. Please <a href='?cmd=login'>log in</a>.";
+                message = "Welcome to ToDoLists.com!  You are now a registered member. Please <a href='?cmd=login'>log in</a>.";
                 model.put("message", message);
                 break;
 
