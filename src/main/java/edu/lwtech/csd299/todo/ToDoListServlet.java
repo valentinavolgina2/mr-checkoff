@@ -27,7 +27,7 @@ public class ToDoListServlet extends HttpServlet {
     private DAO<ToDoList> todoListSessionDao = null;
     private DAO<Item> itemSessionDAO = null;
 
-    private int sessionDuration = 10 * 1000; // 10 seconds
+    private int sessionDuration = 30 * (60 * 1000); // 30 minutes
 
     @Override
     public void init(ServletConfig config) throws ServletException {
