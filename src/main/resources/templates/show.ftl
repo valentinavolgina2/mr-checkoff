@@ -23,13 +23,21 @@
 
         <table border="1">
             <tr>
-                <th>Item Name</th>
+                <th>Completed</th><th>Item Name</th>
             </tr>
             <#list items as item>
             <tr>
-                <td><input type="checkbox"/>${item.name}</td>
+                <td>
+                    <#if item.completed>
+                        <input type="checkbox" checked onclick="return false;">
+                    <#else>
+                        <input type="checkbox" onclick="return false;">
+                    </#if>
+                </td>
+                <td>${item.name}</td>
             </tr>
-            </#list>
+            </#list>   
         </table><br />
+        
     </body>
 </html>

@@ -17,7 +17,7 @@
         <h1><a href="?cmd=home">Mr.Checkoff</a></h1>
         <h2>ToDo Lists:</h2>
 
-        <a href="?cmd=add">Add New List</a>
+        <a href="?cmd=create">Add New List</a>
         <br><br>
 
         <table border="1">
@@ -25,11 +25,14 @@
                 <th>List Name</th>
             </tr>
             <#list todoLists as todoList>
-            <tr>
-                <td><input type="checkbox"/><a href="?cmd=show&id=${todoList.id?c}">${todoList.description}</a></td>
-            </tr>
+                <tr>
+                    <#assign listID>${todoList.id?c}</#assign>
+                    <td>
+                        <a href="?cmd=show&id=${listID}">${todoList.description}</a>
+                    </td>
+                </tr>
             </#list>
-        </table><br />
+        </table><br /><br />
 
     </body>
 </html>

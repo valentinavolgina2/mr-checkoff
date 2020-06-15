@@ -18,15 +18,55 @@
         <h2>Edit List:</h2>
         <h3>${todoList.description}</h3>
 
-        <table border="1">
-            <tr>
-                <th>Item Name</th>
-            </tr>
-            <#list item.listID as item>
-            <tr>
-                <td><${item.description}</td>
-            </tr>
+        <form action="?cmd=save" method="post">
+
+            <#if todoList??>
+                <input type="hidden" name="listID" value=${todoList.id?c} size=5 required/>
+                <input type="text" name="description" value="${todoList.description}" placeholder="to-do list description" size=90 required/><br /><br />
+            <#else>
+                <input type="hidden" name="listID" value=-1 size=5 required/>
+                To-do list description: <input type="text" name="description" value="" size=90 required/><br /><br />
+            </#if>
+
+            <#list items as item>
+
+                <#assign itemName = "name${item?index}">
+                <#assign itemCompleted = "completed${item?index}">
+                <#assign itemId = "id${item?index}">
+
+                <#if item.completed>
+                    <input type="checkbox" name=${itemCompleted} checked >
+                <#else>
+                    <input type="checkbox" name=${itemCompleted} >
+                </#if>
+
+                <#if loggedIn>
+                    <input type="hidden" name=${itemId} value=${item.id?c} size=5 required/>
+                <#else>
+                    <input type="hidden" name=${itemId} value=${item?index} size=5 required/>
+                </#if>
+                <input type="text" name=${itemName} value="${item.name}" size=70 required/>
+                <#if loggedIn>
+                    <a href="?cmd=delete-item&itemId=${item.id?c}&listId=${todoList.id?c}">delete item</a><br />
+                <#else>
+                    <a href="?cmd=delete-item&itemId=${item?index}&listId=${todoList.id?c}">delete item</a><br />
+                </#if>
+
             </#list>
-        </table><br />
+
+
+            <input type="hidden" name="count" value="${count}" size=10/><br /><br />
+
+            <input type="submit" value="Save" />
+            <input class="button" type="button" onclick="window.location.replace('/todo/lists')" value="Cancel" />
+        </form><br /><br />
+
+        <form action="?cmd=add-item" method="post">
+            <#if todoList??>
+                <input type="hidden" name="listID" value=${todoList.id?c} size=5 required/>
+                <input type="text" name="newItem" value="" size=70 required/>
+                <input type="submit" value="Add item" />
+            </#if>
+        </form><br />
     </body>
 </html>
