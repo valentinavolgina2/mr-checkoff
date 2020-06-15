@@ -10,7 +10,7 @@ import org.apache.log4j.*;
 import freemarker.core.*;
 import freemarker.template.*;
 
-@WebServlet(name = "ToDoListServlet", urlPatterns = {"/lists"}, loadOnStartup = 0)
+@WebServlet(name = "ToDoListServlet", urlPatterns = { "/lists" }, loadOnStartup = 0)
 public class ToDoListServlet extends HttpServlet {
 
     private static final long serialVersionUID = 2020111122223333L;
@@ -36,7 +36,7 @@ public class ToDoListServlet extends HttpServlet {
         logger.info("Getting real path for templateDir");
         String templateDir = config.getServletContext().getRealPath(TEMPLATE_DIR);
         logger.info("...real path is: " + templateDir);
-        
+
         logger.info("Initializing Freemarker. templateDir = " + templateDir);
         try {
             freemarker.setDirectoryForTemplateLoading(new File(templateDir));
@@ -44,14 +44,19 @@ public class ToDoListServlet extends HttpServlet {
             logger.error("Template directory not found in directory: " + templateDir, e);
         }
         logger.info("Successfully Loaded Freemarker");
-        
+
+        memberMemoryDao = new MemberMemoryDAO();
+        Member member = new Member("1", "1", "Ryan", "A", "f@m.com");
+        int memberID = memberMemoryDao.insert(member);
 
         todoListDao = new ToDoListMemoryDAO();
-        todoListDao.insert(new ToDoList("Test list", 1));
-        memberMemoryDao = new MemberMemoryDAO();
-        memberMemoryDao.insert(new Member("1", "1", "Ryan", "A", "f@m.com"));
+        ToDoList todolist = new ToDoList("Test list", memberID);
+        int listID = todoListDao.insert(todolist);
+
         itemMemoryDao = new ItemMemoryDAO();
-        addDemoData();
+        itemMemoryDao.insert(new Item("Item 1", listID));
+        itemMemoryDao.insert(new Item("Item 2", listID));
+        // addDemoData();
 
         logger.warn("Initialize complete!");
     }
@@ -62,12 +67,15 @@ public class ToDoListServlet extends HttpServlet {
         long startTime = System.currentTimeMillis();
 
         String command = request.getParameter("cmd");
-        if (command == null) command = "home";
+        if (command == null)
+            command = "home";
 
         String template = "";
         Map<String, Object> model = new HashMap<>();
 
-        //TODO: Add more URL commands to the servlet
+        model.put("loggedIn", false);
+
+        // TODO: Add more URL commands to the servlet
         switch (command) {
             case "home":
                 List<ToDoList> todoLists = todoListDao.getAll();
@@ -76,25 +84,25 @@ public class ToDoListServlet extends HttpServlet {
                 break;
             case "show":
 
-                String idParam = request.getParameter("listId");
+                String idParam = request.getParameter("id");
                 int id = (idParam == null) ? 0 : Integer.parseInt(idParam);
                 
                 ToDoList todoList = todoListDao.getByID(id);
                 List<Item> items = itemMemoryDao.getByOwnerID(id);
                 model.put("todoList", todoList);
-                model.put("item", items);
+                model.put("items", items);
                 template = "show.ftl";
 
                 break;
             case "login":
-                template = "login.ftl";  
+                template = "login.ftl";
             default:
                 logger.debug("Unknown GET command received: " + command);
 
                 // Send 404 error response
                 try {
                     response.sendError(HttpServletResponse.SC_NOT_FOUND);
-                } catch (IOException e)  {
+                } catch (IOException e) {
                     logger.error("IO Error: ", e);
                 }
                 return;
@@ -105,21 +113,21 @@ public class ToDoListServlet extends HttpServlet {
         logger.info("OUT- GET " + request.getRequestURI() + " " + time + "ms");
     }
 
-
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) {
         logger.debug("IN -POST " + request.getRequestURI());
         long startTime = System.currentTimeMillis();
-        
+
         String command = request.getParameter("cmd");
-        if (command == null) command = "";
+        if (command == null)
+            command = "";
 
         int owner = 0;
         boolean loggedIn = false;
         HttpSession session = request.getSession(false);
         if (session != null) {
             try {
-                owner = Integer.parseInt((String)session.getAttribute("owner"));
+                owner = Integer.parseInt((String) session.getAttribute("owner"));
                 loggedIn = true;
             } catch (NumberFormatException e) {
                 owner = 0;
@@ -136,7 +144,7 @@ public class ToDoListServlet extends HttpServlet {
         String lastName = "";
         String email = "";
         Member member;
-        
+
         switch (command) {
 
             case "create":
@@ -157,8 +165,7 @@ public class ToDoListServlet extends HttpServlet {
             case "login":
                 username = request.getParameter("username");
                 password = request.getParameter("password");
-                
-                
+
                 member = memberMemoryDao.search("username", username);
                 if (member == null) {
                     message = "We do not have a member with that username on file. Please try again.<br /><a href='?cmd=login'>Log In</a>";
@@ -186,7 +193,7 @@ public class ToDoListServlet extends HttpServlet {
             case "register":
                 username = request.getParameter("username");
                 password = request.getParameter("password");
-                
+
                 member = memberMemoryDao.search("username", username);
                 if (member != null) {
                     message = "That username is already registered here. Please use a different username.<br /><a href='?cmd=login'>Log In</a>";
@@ -201,27 +208,27 @@ public class ToDoListServlet extends HttpServlet {
                 model.put("message", message);
                 break;
             case "signup":
-                
+
             default:
                 logger.info("Unknown POST command received: " + command);
 
                 // Send 404 error response
                 try {
                     response.sendError(HttpServletResponse.SC_NOT_FOUND);
-                } catch (IOException e)  {
+                } catch (IOException e) {
                     logger.error("IO Error: ", e);
                 }
                 return;
         }
 
         model.put("message", message);
-       
+
         processTemplate(response, template, model);
 
         long time = System.currentTimeMillis() - startTime;
         logger.info("OUT- GET " + request.getRequestURI() + " " + time + "ms");
     }
-    
+
     @Override
     public void destroy() {
         logger.warn("-----------------------------------------");
@@ -234,29 +241,29 @@ public class ToDoListServlet extends HttpServlet {
         return "mr-checkoff Servlet";
     }
 
-
     private ToDoList getToDoListFromRequest(HttpServletRequest request, int owner) {
 
         String description = request.getParameter("description");
-        if (description == null) return null;
+        if (description == null)
+            return null;
 
         List<String> items = new ArrayList<>();
-        for (int i=10; i >= 1; i--) {
+        for (int i = 10; i >= 1; i--) {
             String item = request.getParameter("item" + i);
             if (item == null || item.isEmpty())
                 return null;
             items.add(item);
         }
-        
+
         return null;
-        //return new ToDoList(description, items, owner);
+        // return new ToDoList(description, items, owner);
     }
 
     // ========================================================================
 
     private void processTemplate(HttpServletResponse response, String template, Map<String, Object> model) {
         logger.debug("Processing Template: " + template);
-        
+
         try (PrintWriter out = response.getWriter()) {
             Template view = freemarker.getTemplate(template);
             view.process(model, out);
@@ -264,16 +271,16 @@ public class ToDoListServlet extends HttpServlet {
             logger.error("Template Error: ", e);
         } catch (IOException e) {
             logger.error("IO Error: ", e);
-        } 
-    }    
+        }
+    }
 
     private void addDemoData() {
         logger.debug("Creating sample DemoPojos...");
-        
+
         demoMemoryDao.insert(new DemoPojo("Item I"));
         demoMemoryDao.insert(new DemoPojo("Item II"));
         demoMemoryDao.insert(new DemoPojo("Item III"));
-        
+
         logger.info("...items inserted");
     }
 
