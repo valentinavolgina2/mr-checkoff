@@ -16,7 +16,7 @@
         <#else>
             <form action="?cmd=login" method="post">
 
-                Email: <input type="email" name="username" size=60 /><br />
+                Username: <input name="username" size=60 /><br />
                 Password: <input type="password" name="password" size=60 /><br />
 
                 <input type="submit" value="Submit" />

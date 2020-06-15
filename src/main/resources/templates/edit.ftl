@@ -16,7 +16,6 @@
 
         <h1><a href="?cmd=home">Mr.Checkoff</a></h1>
         <h2>Edit List:</h2>
-        <h3>${todoList.description}</h3>
 
         <form action="?cmd=save" method="post">
 
