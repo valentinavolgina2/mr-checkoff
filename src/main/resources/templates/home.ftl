@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Mr. Checkoff - Home</title>
+        <title>Mr.Checkoff - Home</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
@@ -23,7 +23,7 @@
             </tr>
             <#list todoLists as todoList>
             <tr>
-                <td><input type="checkbox"/><a href="?cmd=show&id=${todoList?id}">${todoList.description}</a></td>
+                <td><input type="checkbox"/><a href="?cmd=show&id=${todoList.id}">${todoList.description}</a></td>
             </tr>
             </#list>
         </table><br />
