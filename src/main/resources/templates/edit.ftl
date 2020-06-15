@@ -14,10 +14,11 @@
             </#if>
         </div>
 
-        <h1>Mr. Checkoff</h1>
+        <h1>Mr.Checkoff</h1>
         <h2>Add / Edit List:</h2>
         <h3>${todoList.description}</h3>
 
+        Delete This List
         <table border="1">
             <tr>
                 <th>Item Name</th>

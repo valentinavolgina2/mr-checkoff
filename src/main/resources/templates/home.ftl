@@ -14,9 +14,10 @@
             </#if>
         </div>
 
-        <h1>Mr. Checkoff</h1>
+        <h1>Mr.Checkoff</h1>
         <h2>ToDo Lists:</h2>
 
+        <a href="?cmd=edit">Add / Edit List</a>
         <table border="1">
             <tr>
                 <th>List Name</th>

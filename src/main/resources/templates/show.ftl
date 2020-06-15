@@ -14,7 +14,7 @@
             </#if>
         </div>
 
-        <h1>Mr. Checkoff</h1>
+        <h1>Mr.Checkoff</h1>
         <h2>${todoList.description}</h2>
     
         <table border="1">
