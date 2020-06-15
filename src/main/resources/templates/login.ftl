@@ -10,18 +10,17 @@
             Don't have an account? <a href="?cmd=signup">Sign Up</a>
         </div>
 
-        <#if loggedIn>
-            <h1><a href="?cmd=home">Mr.Checkoff</a></h1>
-            <h2>Log in to your account:</h2>
-        <#else>
-            <form action="?cmd=login" method="post">
+        <h1><a href="?cmd=home">Mr.Checkoff</a></h1>
+        <h2>Log In:</h2>
+        
+        <form action="?cmd=login" method="post">
 
-                Username: <input name="username" size=60 /><br />
-                Password: <input type="password" name="password" size=60 /><br />
+            Username: <input name="username" size=60 /><br />
+            Password: <input type="password" name="password" size=60 /><br />
 
-                <input type="submit" value="Submit" />
-                <input class="button" type="button" value="Cancel" />
-            </form><br />
-        </#if>
+            <input type="submit" value="Submit" />
+            <input class="button" type="button" value="Cancel" />
+        </form><br />
+        
     </body>
 </html>
