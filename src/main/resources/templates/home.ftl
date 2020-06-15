@@ -14,10 +14,12 @@
             </#if>
         </div>
 
-        <h1>Mr.Checkoff</h1>
+        <h1><a href="?cmd=home">Mr.Checkoff</a></h1>
         <h2>ToDo Lists:</h2>
 
-        <a href="?cmd=edit">Add / Edit List</a>
+        <a href="?cmd=add">Add New List</a>
+        <br><br>
+
         <table border="1">
             <tr>
                 <th>List Name</th>

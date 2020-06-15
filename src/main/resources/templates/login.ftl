@@ -11,7 +11,7 @@
         </div>
 
         <#if loggedIn>
-            <h1>Mr.Checkoff</h1>
+            <h1><a href="?cmd=home">Mr.Checkoff</a></h1>
             <h2>Log in to your account:</h2>
         <#else>
             <form action="?cmd=login" method="post">

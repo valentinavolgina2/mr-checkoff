@@ -10,7 +10,7 @@
             Already signed up? <a href="?cmd=login">Log In</a>
         </div>
 
-        <h1>Mr.Checkoff</h1>
+        <h1><a href="?cmd=home">Mr.Checkoff</a></h1>
         <h2>Create an account:</h2>
 
         <form action="?cmd=signup" method="post">
