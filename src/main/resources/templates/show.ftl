@@ -21,11 +21,11 @@
             <tr>
                 <th>Item Name</th>
             </tr>
-            
+            <#list item.listID as item>
             <tr>
-                <td><${item.description}</td>
+                <td><input type="checkbox"/><${item.description}</td>
             </tr>
-            
+            </#list>
         </table><br />
     </body>
 </html>
