@@ -24,6 +24,7 @@ public class ToDoListServlet extends HttpServlet {
     private DAO<Item> itemDAO = null;
 
     private int sessionDuration = 30 * (60 * 1000); // 30 minutes
+    private int maxItemsForFree = 10;
 
     @Override
     public void init(ServletConfig config) throws ServletException {
@@ -293,15 +294,19 @@ public class ToDoListServlet extends HttpServlet {
                 break;
 
             case "add-item":
-                template = "show.ftl";
 
                 Item newItem = getNewItemFromRequest(request);
                 listID = newItem.getListID();
 
-                addItem(newItem, loggedIn, session);
-
-                model.put("items", getItems(listID, loggedIn, session));
-                model.put("todoList", getToDoList(listID, loggedIn, session));
+                message = addItem(newItem, loggedIn, session);
+                if ("OK".equals(message)) {
+                    template = "show.ftl";
+                    model.put("items", getItems(listID, loggedIn, session));
+                    model.put("todoList", getToDoList(listID, loggedIn, session));
+                } else {
+                    template = "confirm.ftl";
+                    message = message + ".<br /><a href='?cmd=show'>Back</a>";
+                }
                 break;
 
             case "login":
@@ -501,8 +506,9 @@ public class ToDoListServlet extends HttpServlet {
     }
 
     @SuppressWarnings("unchecked")
-    private void addItem(Item item, boolean loggedIn, HttpSession session) {
+    private String addItem(Item item, boolean loggedIn, HttpSession session) {
 
+        String message = "OK";
         if (loggedIn) {
             itemDAO.insert(item);
         } else {
@@ -513,9 +519,17 @@ public class ToDoListServlet extends HttpServlet {
             } else {
                 items = new ArrayList<Item>();
             }
-            items.add(new Item(items.size(), item));
-            session.setAttribute("items", items);
+
+            if (items.size() >= maxItemsForFree) {
+                message = "As an unregistered user, you can not add more then " + maxItemsForFree
+                        + " items on a to-do list";
+            } else {
+                items.add(new Item(items.size(), item));
+                session.setAttribute("items", items);
+            }
         }
+
+        return message;
 
     }
 

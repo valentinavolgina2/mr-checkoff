@@ -25,7 +25,7 @@
         <form action="?cmd=add-item" method="post">
             <#if todoList??>
                 <input type="hidden" name="listID" value=${todoList.id?c} size=5 required/>
-                <input type="text" name="newItem" value="" size=50 required/>
+                <input type="text" name="newItem" value="" size=35 required/>
                 <input type="submit" value="Add item" />
             </#if>
         </form><br />
@@ -34,7 +34,7 @@
 
         <table border="1">
             <tr>
-                <th> </th><th>Item Name</th><th>Action</th>
+                <th> </th><th> </th><th>Item Name</th><th>Action</th>
             </tr>
             <#list items as item>
 
@@ -45,6 +45,7 @@
                 </#if>
 
                 <tr>
+                    <td>${item?index + 1}</td>
                     <td>
                         <input type="hidden" name="id" value=itemId required/>
 
