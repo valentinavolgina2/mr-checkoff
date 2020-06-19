@@ -15,28 +15,50 @@
         </div>
 
         <h1><a href="?cmd=home">Mr.Checkoff</a></h1>
-        <h2>${todoList.description}</h2>
-    
-        <a href="?cmd=edit&id=${todoList.id?c}">Edit list</a><br>
-        <a href="?cmd=delete&id=${todoList.id?c}">Delete list</a>
-        <br><br>
+
+        <h2>
+        ${todoList.description} | 
+        <a href="?cmd=edit&id=${todoList.id?c}">Edit</a>
+        <a href="?cmd=delete&id=${todoList.id?c}">Delete</a>
+        </h2>
+
+        <form action="?cmd=add-item" method="post">
+            <#if todoList??>
+                <input type="hidden" name="listID" value=${todoList.id?c} size=5 required/>
+                <input type="text" name="newItem" value="" size=50 required/>
+                <input type="submit" value="Add item" />
+            </#if>
+        </form><br />
+
+        <br>
 
         <table border="1">
             <tr>
-                <th>Completed</th><th>Item Name</th>
+                <th> </th><th>Item Name</th><th>Action</th>
             </tr>
             <#list items as item>
-            <tr>
-                <td>
-                    <#if item.completed>
-                        <input type="checkbox" checked onclick="return false;">
-                    <#else>
-                        <input type="checkbox" onclick="return false;">
-                    </#if>
-                </td>
-                <td>${item.name}</td>
-            </tr>
+
+                <#if loggedIn>
+                    <#assign itemId = item.id?c>
+                <#else>
+                    <#assign itemId = item?index?c>
+                </#if>
+
+                <tr>
+                    <td>
+                        <input type="hidden" name="id" value=itemId required/>
+
+                        <a href="?cmd=complete-item&itemId=${itemId}&listId=${todoList.id?c}">
+                        <#if item.completed> undo <#else> complete </#if>
+                        </a>
+                    </td>
+                    <td>${item.name}</td>
+                    <td>
+                        <a href="?cmd=delete-item&itemId=${itemId}&listId=${todoList.id?c}">delete</a>
+                    </td>
+                </tr>
             </#list>   
+
         </table><br />
         
     </body>

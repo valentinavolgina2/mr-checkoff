@@ -23,10 +23,6 @@ public class ToDoListServlet extends HttpServlet {
     private DAO<ToDoList> todoListDao = null;
     private DAO<Item> itemDAO = null;
 
-    private DAO<Member> memberSessionDao = null;
-    private DAO<ToDoList> todoListSessionDao = null;
-    private DAO<Item> itemSessionDAO = null;
-
     private int sessionDuration = 30 * (60 * 1000); // 30 minutes
 
     @Override
@@ -140,7 +136,7 @@ public class ToDoListServlet extends HttpServlet {
                 break;
 
             case "delete-item":
-                template = "edit.ftl";
+                template = "show.ftl";
 
                 itemID = parseInt(request.getParameter("itemId"));
                 listID = parseInt(request.getParameter("listId"));
@@ -149,11 +145,10 @@ public class ToDoListServlet extends HttpServlet {
 
                 model.put("items", getItems(listID, loggedIn, session));
                 model.put("todoList", getToDoList(listID, loggedIn, session));
-                model.put("count", 0);
                 break;
 
             case "complete-item":
-                template = "edit.ftl";
+                template = "show.ftl";
 
                 itemID = parseInt(request.getParameter("itemId"));
                 listID = parseInt(request.getParameter("listId"));
@@ -162,7 +157,6 @@ public class ToDoListServlet extends HttpServlet {
 
                 model.put("items", getItems(listID, loggedIn, session));
                 model.put("todoList", getToDoList(listID, loggedIn, session));
-                model.put("count", 0);
                 break;
 
             case "edit":
@@ -170,16 +164,13 @@ public class ToDoListServlet extends HttpServlet {
 
                 listID = parseInt(request.getParameter("id"));
 
-                model.put("items", getItems(listID, loggedIn, session));
                 model.put("todoList", getToDoList(listID, loggedIn, session));
-                model.put("count", 0);
 
                 break;
 
             case "create":
                 template = "edit.ftl";
                 model.put("items", new ArrayList<Item>());
-                model.put("count", 0);
                 break;
 
             case "delete":
@@ -302,7 +293,7 @@ public class ToDoListServlet extends HttpServlet {
                 break;
 
             case "add-item":
-                template = "edit.ftl";
+                template = "show.ftl";
 
                 Item newItem = getNewItemFromRequest(request);
                 listID = newItem.getListID();
@@ -311,7 +302,6 @@ public class ToDoListServlet extends HttpServlet {
 
                 model.put("items", getItems(listID, loggedIn, session));
                 model.put("todoList", getToDoList(listID, loggedIn, session));
-                model.put("count", 0);
                 break;
 
             case "login":
