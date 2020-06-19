@@ -26,6 +26,9 @@ public class ToDoListServlet extends HttpServlet {
     private int sessionDuration = 30 * (60 * 1000); // 30 minutes
     private int maxItemsForFree = 10;
 
+    private ToDoList sessionToDoList = null;
+    private List<Item> sessionItems = null;
+
     @Override
     public void init(ServletConfig config) throws ServletException {
         logger.warn("=========================================");
@@ -200,6 +203,8 @@ public class ToDoListServlet extends HttpServlet {
                 break;
 
             case "signup":
+                saveSessionData(session);
+
                 if (session != null) {
                     session.invalidate();
                 }
@@ -353,7 +358,9 @@ public class ToDoListServlet extends HttpServlet {
                 }
 
                 member = new Member(username, password, firstName, lastName, email);
-                memberDao.insert(member);
+                memberID = memberDao.insert(member);
+
+                moveSessionDataIntoMemory(memberID);
 
                 message = "Welcome to ToDoLists.com!  You are now a registered member. Please <a href='?cmd=login'>log in</a>.";
                 model.put("message", message);
@@ -563,6 +570,35 @@ public class ToDoListServlet extends HttpServlet {
             session.setAttribute("list", null);
             session.setAttribute("items", null);
         }
+
+    }
+
+    @SuppressWarnings("unchecked")
+    private void saveSessionData(HttpSession session) {
+        Object o = session.getAttribute("list");
+        if (o != null) {
+            sessionToDoList = (ToDoList) o;
+        }
+
+        o = session.getAttribute("items");
+        if (o != null) {
+            sessionItems = (List<Item>) o;
+        }
+    }
+
+    private void moveSessionDataIntoMemory(int memberID) {
+
+        if (sessionToDoList != null) {
+            int listID = todoListDao.insert(new ToDoList(sessionToDoList.getDescription(), memberID));
+
+            if (sessionItems != null) {
+                for (Item item : sessionItems) {
+                    itemDAO.insert(new Item(-1, item.getName(), item.isCompleted(), listID));
+                }
+            }
+        }
+        sessionToDoList = null;
+        sessionItems = null;
 
     }
 
