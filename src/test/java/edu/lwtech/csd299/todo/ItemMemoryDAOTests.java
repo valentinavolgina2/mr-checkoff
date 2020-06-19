@@ -18,7 +18,13 @@ public class ItemMemoryDAOTests {
         item2 = new Item("Item #2", 1);
         item3 = new Item("Item #1", 2);
 
+        String jdbc = "jdbc:mariadb://localhost:3306/todo?useSSL=false&allowPublicKeyRetrieval=true";
+        String user = "todo";
+        String password = "lwtech2000";
+        String driver = "org.mariadb.jdbc.Driver";
+
         memoryDAO = new ItemMemoryDAO();
+        memoryDAO.init(jdbc, user, password, driver);
 
         memoryDAO.insert(item1);
         memoryDAO.insert(item2);

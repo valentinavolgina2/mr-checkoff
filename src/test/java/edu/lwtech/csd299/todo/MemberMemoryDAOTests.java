@@ -18,7 +18,13 @@ public class MemberMemoryDAOTests {
         tom = new Member("TomLwtech", "222", "Tom", "", "tom@lwtech.edu");
         mary = new Member("MaryLwtech", "333", "Mary", "", "mary@lwtech.edu");
 
+        String jdbc = "jdbc:mariadb://localhost:3306/todo?useSSL=false&allowPublicKeyRetrieval=true";
+        String user = "todo";
+        String password = "lwtech2000";
+        String driver = "org.mariadb.jdbc.Driver";
+
         memoryDAO = new MemberMemoryDAO();
+        memoryDAO.init(jdbc, user, password, driver);
 
         memoryDAO.insert(fred);
         memoryDAO.insert(tom);

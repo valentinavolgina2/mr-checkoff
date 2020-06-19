@@ -18,7 +18,13 @@ public class ToDoListMemoryDAOTests {
         list2 = new ToDoList("List #2", 1);
         list3 = new ToDoList("List #3", 2);
 
+        String jdbc = "jdbc:mariadb://localhost:3306/todo?useSSL=false&allowPublicKeyRetrieval=true";
+        String user = "todo";
+        String password = "lwtech2000";
+        String driver = "org.mariadb.jdbc.Driver";
+
         memoryDAO = new ToDoListMemoryDAO();
+        memoryDAO.init(jdbc, user, password, driver);
 
         memoryDAO.insert(list1);
         memoryDAO.insert(list2);

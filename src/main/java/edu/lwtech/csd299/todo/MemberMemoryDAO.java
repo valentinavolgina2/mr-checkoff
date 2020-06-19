@@ -17,7 +17,7 @@ public class MemberMemoryDAO implements DAO<Member> {
         // addSampleData();
     }
 
-    public boolean init() {
+    public boolean init(String jdbc, String user, String password, String driver) {
         return true;
     }
 

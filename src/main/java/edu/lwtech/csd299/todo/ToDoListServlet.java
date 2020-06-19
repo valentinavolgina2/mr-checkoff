@@ -48,6 +48,27 @@ public class ToDoListServlet extends HttpServlet {
         }
         logger.info("Successfully Loaded Freemarker");
 
+        String jdbc = "jdbc:mariadb://localhost:3306/todo?useSSL=false&allowPublicKeyRetrieval=true";
+        // String jdbc =
+        // "jdbc:mariadb://csd299.cv18zcsjzteu.us-west-2.rds.amazonaws.com:3306/topten?useSSL=false&allowPublicKeyRetrieval=true";
+        String user = "todo";
+        String password = "lwtech2000";
+        String driver = "org.mariadb.jdbc.Driver";
+
+        // ======== UNCOMMENT TO USE MEMORY DAOs ========
+        todoListDao = new ToDoListMemoryDAO();
+        itemDAO = new ItemMemoryDAO();
+        memberDao = new MemberMemoryDAO();
+
+        // ======== UNCOMMENT TO USE SQL DAOs ========
+        // todoListDao = new ToDoListSqlDAO();
+        // itemDAO = new ItemSqlDAO();
+        // memberDao = new MemberSqlDAO();
+
+        memberDao.init(jdbc, user, password, driver);
+        todoListDao.init(jdbc, user, password, driver);
+        itemDAO.init(jdbc, user, password, driver);
+
         addDemoData();
 
         logger.warn("Initialize complete!");
@@ -469,10 +490,6 @@ public class ToDoListServlet extends HttpServlet {
 
     private void addDemoData() {
         logger.debug("Creating sample DemoPojos...");
-
-        todoListDao = new ToDoListMemoryDAO();
-        itemDAO = new ItemMemoryDAO();
-        memberDao = new MemberMemoryDAO();
 
         int memberID = memberDao.insert(new Member("FredLwtech", "111", "Fred", "", "fred@lwtech.edu"));
         int listID = todoListDao.insert(new ToDoList("List#1", memberID));

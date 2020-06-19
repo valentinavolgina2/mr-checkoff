@@ -3,7 +3,7 @@ package edu.lwtech.csd299.todo;
 import java.util.*;
 
 public interface DAO<T> {
-    public boolean init();
+    public boolean init(String jdbc, String user, String password, String driver);
 
     public int insert(T pojo);
 

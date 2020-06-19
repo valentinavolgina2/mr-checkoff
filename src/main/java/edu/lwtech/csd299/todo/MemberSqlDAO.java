@@ -14,16 +14,13 @@ public class MemberSqlDAO implements DAO<Member> {
         this.conn = null; // conn must be created during init()
     }
 
-    public boolean init() {
+    public boolean init(String jdbc, String user, String password, String driver) {
         logger.info("Connecting to the database...");
 
-        String jdbcDriver = "org.mariadb.jdbc.Driver"; // The MariaDB driver works better than the MySQL driver
-        String url = "jdbc:mariadb://localhost:3306/todo?useSSL=false&allowPublicKeyRetrieval=true";
+        conn = SQLUtils.connect(jdbc, user, password, driver);
 
-        conn = SQLUtils.connect(url, "todo", "lwtech2000", jdbcDriver); // TODO: Remove DB credentials from the source
-                                                                        // code!
         if (conn == null) {
-            logger.error("Unable to connect to SQL Database with URL: " + url);
+            logger.error("Unable to connect to SQL Database with URL: " + jdbc);
             return false;
         }
         logger.info("...connected!");
