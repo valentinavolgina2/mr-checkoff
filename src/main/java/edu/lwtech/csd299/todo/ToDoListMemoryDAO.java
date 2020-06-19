@@ -63,7 +63,9 @@ public class ToDoListMemoryDAO implements DAO<ToDoList> {
         logger.debug("Trying to update to-do list with ID: " + id);
 
         ToDoList todoListFound = null;
+        int index = -1;
         for (ToDoList oldToDoList : memoryDB) {
+            index++;
             if (oldToDoList.getId() == id) {
                 todoListFound = oldToDoList;
                 break;
@@ -72,7 +74,7 @@ public class ToDoListMemoryDAO implements DAO<ToDoList> {
 
         if (todoListFound != null) {
             memoryDB.remove(todoListFound);
-            memoryDB.add(new ToDoList(id, todoList));
+            memoryDB.add(index, new ToDoList(id, todoList));
             logger.debug("To-do list was successfully updated!");
             return true;
         } else {

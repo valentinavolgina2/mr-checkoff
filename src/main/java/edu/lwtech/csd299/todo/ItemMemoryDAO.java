@@ -61,7 +61,9 @@ public class ItemMemoryDAO implements DAO<Item> {
         logger.debug("Trying to update item with ID: " + id);
 
         Item itemFound = null;
+        int index = -1;
         for (Item oldItem : memoryDB) {
+            index++;
             if (oldItem.getId() == id) {
                 itemFound = oldItem;
                 break;
@@ -70,7 +72,7 @@ public class ItemMemoryDAO implements DAO<Item> {
 
         if (itemFound != null) {
             memoryDB.remove(itemFound);
-            memoryDB.add(new Item(id, item));
+            memoryDB.add(index, new Item(id, item));
             logger.debug("Item was successfully updated!");
             return true;
         } else {

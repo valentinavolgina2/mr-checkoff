@@ -63,7 +63,9 @@ public class MemberMemoryDAO implements DAO<Member> {
         logger.debug("Trying to update member with ID: " + id);
 
         Member memberFound = null;
+        int index = -1;
         for (Member oldMember : memoryDB) {
+            index++;
             if (oldMember.getId() == id) {
                 memberFound = oldMember;
                 break;
@@ -72,7 +74,7 @@ public class MemberMemoryDAO implements DAO<Member> {
 
         if (memberFound != null) {
             memoryDB.remove(memberFound);
-            memoryDB.add(new Member(id, member));
+            memoryDB.add(index, new Member(id, member));
             logger.debug("Member successfully updated!");
             return true;
         } else {

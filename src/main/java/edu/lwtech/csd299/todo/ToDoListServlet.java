@@ -460,7 +460,6 @@ public class ToDoListServlet extends HttpServlet {
 
     }
 
-    @SuppressWarnings("unchecked")
     private ToDoList getToDoList(int listID, boolean loggedIn, HttpSession session) {
         if (loggedIn) {
             return todoListDao.getByID(listID);
@@ -470,7 +469,6 @@ public class ToDoListServlet extends HttpServlet {
 
     }
 
-    @SuppressWarnings("unchecked")
     private List<ToDoList> getToDoListsOfMember(int memberID, boolean loggedIn, HttpSession session) {
         List<ToDoList> todoLists = new ArrayList<>();
 
