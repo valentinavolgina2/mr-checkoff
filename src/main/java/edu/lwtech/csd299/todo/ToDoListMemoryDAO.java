@@ -18,6 +18,7 @@ public class ToDoListMemoryDAO implements DAO<ToDoList> {
     }
 
     public boolean init(String jdbc, String user, String password, String driver) {
+        addDemoToDoListData();
         return true;
     }
 
@@ -176,6 +177,15 @@ public class ToDoListMemoryDAO implements DAO<ToDoList> {
 
     public synchronized int generateNextItemID() {
         return nextID++;
+    }
+
+    private void addDemoToDoListData() {
+        logger.debug("Creating demo ToDoLists...");
+
+        insert(new ToDoList("List #1", 1));
+        insert(new ToDoList("List #2", 2));
+
+        logger.info(size() + " to-do lists inserted");
     }
 
 }

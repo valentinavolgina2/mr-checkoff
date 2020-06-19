@@ -18,6 +18,7 @@ public class MemberMemoryDAO implements DAO<Member> {
     }
 
     public boolean init(String jdbc, String user, String password, String driver) {
+        addDemoMemberData();
         return true;
     }
 
@@ -170,6 +171,15 @@ public class MemberMemoryDAO implements DAO<Member> {
 
     public synchronized int generateNextItemID() {
         return nextID++;
+    }
+
+    private void addDemoMemberData() {
+        logger.debug("Creating demo Members...");
+
+        insert(new Member("FredLwtech", "111", "Fred", "", "fred@lwtech.edu"));
+        insert(new Member("MaryLwtech", "333", "Mary", "", "mary@lwtech.edu"));
+
+        logger.info(size() + " members inserted");
     }
 
 }

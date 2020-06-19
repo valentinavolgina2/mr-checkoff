@@ -8,14 +8,10 @@ public class ToDoListMemoryDAOTests {
 
     private DAO<ToDoList> memoryDAO;
 
-    private ToDoList list1;
-    private ToDoList list2;
     private ToDoList list3;
 
     @Before
     public void setUp() {
-        list1 = new ToDoList("List #1", 1);
-        list2 = new ToDoList("List #2", 1);
         list3 = new ToDoList("List #3", 2);
 
         String jdbc = "jdbc:mariadb://localhost:3306/todo?useSSL=false&allowPublicKeyRetrieval=true";
@@ -26,8 +22,6 @@ public class ToDoListMemoryDAOTests {
         memoryDAO = new ToDoListMemoryDAO();
         memoryDAO.init(jdbc, user, password, driver);
 
-        memoryDAO.insert(list1);
-        memoryDAO.insert(list2);
     }
 
     @Test
@@ -110,9 +104,8 @@ public class ToDoListMemoryDAOTests {
     public void getByOwnerIDTest() {
         List<ToDoList> ownerToDoLists = memoryDAO.getByOwnerID(1);
         assertEquals(1, ownerToDoLists.get(0).getId());
-        assertEquals(2, ownerToDoLists.get(1).getId());
-        assertEquals(2, ownerToDoLists.size());
-        ownerToDoLists = memoryDAO.getByOwnerID(2);
+        assertEquals(1, ownerToDoLists.size());
+        ownerToDoLists = memoryDAO.getByOwnerID(3);
         assertEquals(0, ownerToDoLists.size());
     }
 

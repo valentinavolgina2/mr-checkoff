@@ -14,9 +14,7 @@ public class MemberMemoryDAOTests {
 
     @Before
     public void setUp() {
-        fred = new Member("FredLwtech", "111", "Fred", "", "fred@lwtech.edu");
         tom = new Member("TomLwtech", "222", "Tom", "", "tom@lwtech.edu");
-        mary = new Member("MaryLwtech", "333", "Mary", "", "mary@lwtech.edu");
 
         String jdbc = "jdbc:mariadb://localhost:3306/todo?useSSL=false&allowPublicKeyRetrieval=true";
         String user = "todo";
@@ -26,14 +24,12 @@ public class MemberMemoryDAOTests {
         memoryDAO = new MemberMemoryDAO();
         memoryDAO.init(jdbc, user, password, driver);
 
-        memoryDAO.insert(fred);
-        memoryDAO.insert(tom);
     }
 
     @Test
     public void insertTest() {
         assertEquals(2, memoryDAO.size());
-        int memberID = memoryDAO.insert(mary);
+        int memberID = memoryDAO.insert(tom);
         assertEquals(3, memoryDAO.size());
         assertTrue(memberID > 0);
     }
@@ -41,7 +37,7 @@ public class MemberMemoryDAOTests {
     @Test
     public void deleteTest() {
         assertEquals(2, memoryDAO.size());
-        int memberID = memoryDAO.insert(mary);
+        int memberID = memoryDAO.insert(tom);
         assertEquals(3, memoryDAO.size());
         memoryDAO.delete(memberID);
         assertEquals(2, memoryDAO.size());
@@ -70,7 +66,7 @@ public class MemberMemoryDAOTests {
         assertEquals("Johnson", member.getLastName());
 
         assertEquals(2, memoryDAO.size());
-        assertFalse(memoryDAO.update(mary));
+        assertFalse(memoryDAO.update(tom));
     }
 
     @Test
@@ -99,7 +95,7 @@ public class MemberMemoryDAOTests {
     public void searchTest() {
         Member member = memoryDAO.search("username", "FredLwtech");
         assertEquals(1, member.getId());
-        member = memoryDAO.search("email", "tom@lwtech.edu");
+        member = memoryDAO.search("email", "mary@lwtech.edu");
         assertEquals(2, member.getId());
         member = memoryDAO.search("username", "some user");
         assertNull(member);

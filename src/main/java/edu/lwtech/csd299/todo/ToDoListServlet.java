@@ -69,8 +69,6 @@ public class ToDoListServlet extends HttpServlet {
         todoListDao.init(jdbc, user, password, driver);
         itemDAO.init(jdbc, user, password, driver);
 
-        addDemoData();
-
         logger.warn("Initialize complete!");
     }
 
@@ -486,23 +484,6 @@ public class ToDoListServlet extends HttpServlet {
         } catch (IOException e) {
             logger.error("IO Error: ", e);
         }
-    }
-
-    private void addDemoData() {
-        logger.debug("Creating sample DemoPojos...");
-
-        int memberID = memberDao.insert(new Member("FredLwtech", "111", "Fred", "", "fred@lwtech.edu"));
-        int listID = todoListDao.insert(new ToDoList("List#1", memberID));
-        itemDAO.insert(new Item("Item 1.1", listID));
-        itemDAO.insert(new Item("Item 1.2", listID));
-
-        memberID = memberDao.insert(new Member("MaryLwtech", "333", "Mary", "", "mary@lwtech.edu"));
-        listID = todoListDao.insert(new ToDoList("List #2", memberID));
-        itemDAO.insert(new Item("Item 2.1", listID));
-        itemDAO.insert(new Item("Item 2.2", listID));
-        itemDAO.insert(new Item("Item 2.3", listID));
-
-        logger.info("...items inserted");
     }
 
     private int parseInt(String s) {

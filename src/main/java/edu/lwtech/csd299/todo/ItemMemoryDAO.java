@@ -16,6 +16,7 @@ public class ItemMemoryDAO implements DAO<Item> {
     }
 
     public boolean init(String jdbc, String user, String password, String driver) {
+        addDemoItemData();
         return true;
     }
 
@@ -173,6 +174,19 @@ public class ItemMemoryDAO implements DAO<Item> {
 
     public synchronized int generateNextItemID() {
         return nextID++;
+    }
+
+    private void addDemoItemData() {
+        logger.debug("Creating demo Items...");
+
+        insert(new Item("Item 1.1", 1));
+        insert(new Item("Item 1.2", 1));
+
+        insert(new Item("Item 2.1", 2));
+        insert(new Item("Item 2.2", 2));
+        insert(new Item("Item 2.3", 2));
+
+        logger.info(size() + " items inserted");
     }
 
 }
