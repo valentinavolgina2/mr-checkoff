@@ -33,18 +33,22 @@
                 <#assign itemCompleted = "completed${item?index}">
                 <#assign itemId = "id${item?index}">
 
-                <#if item.completed>
-                    <input type="checkbox" name=${itemCompleted} checked >
-                <#else>
-                    <input type="checkbox" name=${itemCompleted} >
-                </#if>
-
                 <#if loggedIn>
                     <input type="hidden" name=${itemId} value=${item.id?c} size=5 required/>
+
+                    <a href="?cmd=complete-item&itemId=${item.id?c}&listId=${todoList.id?c}">
+                    <#if item.completed> undo <#else> complete </#if>
+                    </a>
                 <#else>
                     <input type="hidden" name=${itemId} value=${item?index} size=5 required/>
+
+                    <a href="?cmd=complete-item&itemId=${item?index}&listId=${todoList.id?c}">
+                    <#if item.completed> undo <#else> complete </#if>
+                    </a>
                 </#if>
-                <input type="text" name=${itemName} value="${item.name}" size=70 required/>
+
+                ${item.name}
+                
                 <#if loggedIn>
                     <a href="?cmd=delete-item&itemId=${item.id?c}&listId=${todoList.id?c}">delete item</a><br />
                 <#else>
