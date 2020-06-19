@@ -12,7 +12,7 @@ public class ToDoListMemoryDAO implements DAO<ToDoList> {
     private List<ToDoList> memoryDB;
 
     public ToDoListMemoryDAO() {
-        this.nextID = 1000;
+        this.nextID = 1;
         this.memoryDB = new ArrayList<>();
         // addSampleData();
     }

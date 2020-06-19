@@ -43,10 +43,10 @@ public class MemberMemoryDAOTests {
 
     @Test
     public void getByIDTest() {
-        Member member = memoryDAO.getByID(1000);
-        assertEquals(1000, member.getId());
-        member = memoryDAO.getByID(1001);
-        assertEquals(1001, member.getId());
+        Member member = memoryDAO.getByID(1);
+        assertEquals(1, member.getId());
+        member = memoryDAO.getByID(2);
+        assertEquals(2, member.getId());
     }
 
     @Test
@@ -54,13 +54,13 @@ public class MemberMemoryDAOTests {
 
         assertEquals(2, memoryDAO.size());
 
-        Member member = memoryDAO.getByID(1000);
+        Member member = memoryDAO.getByID(1);
         assertEquals("", member.getLastName());
 
-        Member fredUpdated = new Member(1000, new Member("FredLwtech", "111", "Fred", "Johnson", "fred@lwtech.edu"));
+        Member fredUpdated = new Member(1, new Member("FredLwtech", "111", "Fred", "Johnson", "fred@lwtech.edu"));
         assertTrue(memoryDAO.update(fredUpdated));
 
-        member = memoryDAO.getByID(1000);
+        member = memoryDAO.getByID(1);
         assertEquals("Johnson", member.getLastName());
 
         assertEquals(2, memoryDAO.size());
@@ -70,9 +70,9 @@ public class MemberMemoryDAOTests {
     @Test
     public void getByIndexTest() {
         Member member = memoryDAO.getByIndex(0);
-        assertEquals(1000, member.getId());
+        assertEquals(1, member.getId());
         member = memoryDAO.getByIndex(1);
-        assertEquals(1001, member.getId());
+        assertEquals(2, member.getId());
     }
 
     @Test
@@ -92,9 +92,9 @@ public class MemberMemoryDAOTests {
     @Test
     public void searchTest() {
         Member member = memoryDAO.search("username", "FredLwtech");
-        assertEquals(1000, member.getId());
+        assertEquals(1, member.getId());
         member = memoryDAO.search("email", "tom@lwtech.edu");
-        assertEquals(1001, member.getId());
+        assertEquals(2, member.getId());
         member = memoryDAO.search("username", "some user");
         assertNull(member);
     }

@@ -14,9 +14,9 @@ public class ItemMemoryDAOTests {
 
     @Before
     public void setUp() {
-        item1 = new Item("Item #1", 1000);
-        item2 = new Item("Item #2", 1000);
-        item3 = new Item("Item #1", 1001);
+        item1 = new Item("Item #1", 1);
+        item2 = new Item("Item #2", 1);
+        item3 = new Item("Item #1", 2);
 
         memoryDAO = new ItemMemoryDAO();
 
@@ -43,9 +43,9 @@ public class ItemMemoryDAOTests {
 
     @Test
     public void getByIDTest() {
-        Item item = memoryDAO.getByID(1000);
+        Item item = memoryDAO.getByID(1);
         assertEquals("Item #1", item.getName());
-        item = memoryDAO.getByID(1001);
+        item = memoryDAO.getByID(2);
         assertEquals("Item #2", item.getName());
         assertNull(memoryDAO.getByID(1002));
     }
@@ -55,13 +55,13 @@ public class ItemMemoryDAOTests {
 
         assertEquals(2, memoryDAO.size());
 
-        Item item = memoryDAO.getByID(1000);
+        Item item = memoryDAO.getByID(1);
         assertFalse(item.isCompleted());
 
         Item itemCompleted = new Item(item.getId(), item.getName(), true, item.getListID());
         assertTrue(memoryDAO.update(itemCompleted));
 
-        item = memoryDAO.getByID(1000);
+        item = memoryDAO.getByID(1);
         assertTrue(item.isCompleted());
 
         assertEquals(2, memoryDAO.size());
@@ -71,9 +71,9 @@ public class ItemMemoryDAOTests {
     @Test
     public void getByIndexTest() {
         Item item = memoryDAO.getByIndex(0);
-        assertEquals(1000, item.getId());
+        assertEquals(1, item.getId());
         item = memoryDAO.getByIndex(1);
-        assertEquals(1001, item.getId());
+        assertEquals(2, item.getId());
     }
 
     @Test
@@ -93,20 +93,20 @@ public class ItemMemoryDAOTests {
     @Test
     public void searchTest() {
         Item item = memoryDAO.search("name", "item #1");
-        assertEquals(1000, item.getId());
+        assertEquals(1, item.getId());
         item = memoryDAO.search("name", "item #2");
-        assertEquals(1001, item.getId());
+        assertEquals(2, item.getId());
         item = memoryDAO.search("name", "some item");
         assertNull(item);
     }
 
     @Test
     public void getByOwnerIDTest() {
-        List<Item> listItems = memoryDAO.getByOwnerID(1000);
-        assertEquals(1000, listItems.get(0).getId());
-        assertEquals(1001, listItems.get(1).getId());
+        List<Item> listItems = memoryDAO.getByOwnerID(1);
+        assertEquals(1, listItems.get(0).getId());
+        assertEquals(2, listItems.get(1).getId());
         assertEquals(2, listItems.size());
-        listItems = memoryDAO.getByOwnerID(1001);
+        listItems = memoryDAO.getByOwnerID(2);
         assertEquals(0, listItems.size());
     }
 

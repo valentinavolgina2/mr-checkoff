@@ -11,7 +11,7 @@ public class ItemMemoryDAO implements DAO<Item> {
     private List<Item> memoryDB;
 
     public ItemMemoryDAO() {
-        this.nextID = 1000;
+        this.nextID = 1;
         this.memoryDB = new ArrayList<>();
     }
 

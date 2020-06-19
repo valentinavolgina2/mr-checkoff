@@ -12,7 +12,7 @@ public class MemberMemoryDAO implements DAO<Member> {
     private List<Member> memoryDB;
 
     public MemberMemoryDAO() {
-        this.nextID = 1000;
+        this.nextID = 1;
         this.memoryDB = new ArrayList<>();
         // addSampleData();
     }
